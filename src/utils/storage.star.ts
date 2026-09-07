@@ -52,8 +52,13 @@ export class StarStorage {
             await release();
         }
     }
-    async getStorageUserInfor(userId: number){
-        const rawDataRead = await fsPromises.readFile(this.path, 'utf-8')
+    async getStorageUserInfor(userId: number): Promise<User>{
+        let rawDataRead = await fsPromises.readFile(this.path, 'utf-8')
+        if(!rawDataRead) {
+            await fsPromises.writeFile(this.path, '[]', 'utf-8')
+            rawDataRead = '[]'
+        } 
+        
         const readData = JSON.parse(rawDataRead)
         let userInfor = readData.find((item:any)=> item.userId == userId)
         if (!userInfor) {

@@ -1,5 +1,6 @@
 import { Bot, Context, SessionFlavor, session} from "grammy";
-import { ContentExecution } from "./telegram.services/telegram.service.js";
+import { run } from "@grammyjs/runner";
+import { ContentExecution } from "./01.handeler/00.service/01.service.execution.js";
 import { StarStorage } from "src/utils/storage.star.js";
 import dotenv from 'dotenv'
 dotenv.config()
@@ -10,7 +11,8 @@ interface sessionData {
     isBuying: boolean,
     isAiContent: boolean,
     isAiImage: boolean,
-    isAiVideo: boolean
+    isAiVideo: boolean,
+    tempStarBuy: number
 } 
 export type context = Context & SessionFlavor<sessionData>
 const token = process.env.TOKEN_BOT as string
@@ -34,7 +36,8 @@ export class RunAiBot {
                     isBuying: false,
                     isAiContent: false,
                     isAiImage: false,
-                    isAiVideo: false
+                    isAiVideo: false,
+                    tempStarBuy: 0
                 }     
             }
         })
@@ -42,6 +45,6 @@ export class RunAiBot {
     }
     async runBot(){
         console.log("bot is running...")
-        this.bot.start()
+        run(this.bot)
     }
 }
