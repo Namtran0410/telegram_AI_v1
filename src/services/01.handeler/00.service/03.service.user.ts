@@ -18,9 +18,12 @@ export class ServiceUser {
 
     async actionHome() {
         this.bot.callbackQuery("btn_home", async (c) => {
+            //Delete 
+            await c.deleteMessage()
+            
+            // callback query
             await c.answerCallbackQuery();
             await c.reply("Choosing your AI service!", { reply_markup: UI.menuKeyboard.btnMenu() });
-
         });
     }
 }
