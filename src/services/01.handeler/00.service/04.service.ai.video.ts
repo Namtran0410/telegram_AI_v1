@@ -2,11 +2,14 @@ import { Bot, Context, InlineKeyboard, SessionFlavor, session } from "grammy";
 import { context } from "../../run.js";
 import { UiIndex as UI } from "../../00.ui/00.index.ui.js";
 import { Request } from "../01.request.execution/00.request.index.js";
+import { StarStorage } from "src/utils/storage.star.js";
 
 export class ServiceAiVideo {
     private bot: Bot<context>;
+    private strg: StarStorage
     constructor(bot: Bot<context>) {
         this.bot = bot;
+        this.strg = new StarStorage()
     }
     async actionAiVideoSelection(){
         let file_id = ""
@@ -26,9 +29,20 @@ export class ServiceAiVideo {
             await next()        
         })
         this.bot.on("message:text", async(c)=> {
-            // Thêm trường hợp user nhập chữ
             const res = await Request.aiVideo.requestCutVideo(file_id, duration, +c.msg.text)
-            await c.reply(res.message, {reply_markup: UI.menuKeyboard.btnMenu()})
+            const userInfor = await this.strg.getStorageUserInfor(c.from.id)
+            const videoPrice = Number(process.env.videoPrice) || 0
+            const remainStar = userInfor.star  - videoPrice
+
+            await this.strg.storageStarOfUser({
+                "username": c.from.username,
+                "userId": c.from.id,
+                "star": remainStar
+            })
+            await c.reply(`${res.message}, your star balance now is: $`, {reply_markup: UI.menuKeyboard.btnMenu()})
+            
+
+
         })
     }
 }
