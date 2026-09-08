@@ -1,0 +1,16 @@
+import { getRequestListener } from "@hono/node-server";
+import { app } from "./00.provide.index.js";
+import http from "node:http";
+import { ProviderVideoExecution } from "./02.provider.video.js";
+import { logger } from "hono/logger";
+export class ProvideExecution {
+    readonly provideVideoExecution
+    constructor(){
+        app.use('*', logger())
+        this.provideVideoExecution = new ProviderVideoExecution().execution()
+        http.createServer(getRequestListener(app.fetch)).listen(process.env.port,()=> {
+            console.log(`server is running at ${process.env.host}${process.env.port}`)
+        })
+    }
+}
+

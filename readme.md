@@ -7,11 +7,17 @@ npm i dotenv
 npm install typescript @types/node ts-node --save-dev
 npm install telegraf
 npm i @grammyjs/runner
-
-
+npm install hono
+npm install @hono/node-server
+npm install -D tsx
+npm install -D selfsigned @types/selfsigned
+npm i fluent-ffmpeg @ffmpeg-installer/ffmpeg
+npm i -D @types/fluent-ffmpeg
 
 ## ============================================================================================================
 # 📌 Tính năng chính
+App Name: NexusBridge
+user trigger → api server → api provider → api server → user
 
 ## ✍️ AI Content — Sinh nội dung văn bản
 

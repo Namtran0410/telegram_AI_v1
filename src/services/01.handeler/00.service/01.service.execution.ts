@@ -38,7 +38,7 @@ export class ContentExecution {
         Object.entries(aiActions).forEach(([key, config]) => {
             this.bot.callbackQuery(key, async (c) => {
                 await c.answerCallbackQuery();
-
+                
                 const currentStars = c.session?.stars || 0;
 
                 if (currentStars > 0) {
@@ -48,7 +48,11 @@ export class ContentExecution {
 
                     (c.session as any)[config.flag] = true;
 
-                    await c.reply(config.text);
+                    if(key == "btn_ai_video") {
+                        await c.reply("Chosing action with your video", {reply_markup: UI.menuKeyboard.btnAiVideo()})
+                    } else {
+                        await c.reply(config.text);
+                    }
                 } else {
                     await c.answerCallbackQuery({
                         text: "⚠️ You have run out of stars! Please top up.",
@@ -58,36 +62,6 @@ export class ContentExecution {
                 }
             });
         });
-
-        this.bot.on("message:text", async (c) => {
-            if (c.session.isAiContent || c.session.isAiImage || c.session.isAiVideo) {
-                if ((c.session.stars || 0) > 0) {
-                    if(c.session.isAiContent) {
-                        c.session.stars-=0.005;
-                    }
-                    if(c.session.isAiImage) {
-                        c.session.stars-=0.01;
-                    }
-                    if(c.session.isAiVideo) {
-                        c.session.stars-=0.05;
-                    }
-                     
-                    this.storagefunc.storageStarOfUser({"star": c.session.stars, "userId": c.from.id, "username": c.from.username})
-
-                    let modeName = "AI Content";
-                    if (c.session.isAiImage) modeName = "AI Image";
-                    if (c.session.isAiVideo) modeName = "AI Video";
-
-                    await c.reply(`✨ ${modeName} processed successfully! Remaining stars: ${c.session.stars.toFixed(3)} ⭐`);
-                } else {
-                    await c.reply("⚠️ You have run out of stars! Please top up.");
-                }
-
-                await c.reply("How can I help you next?", { reply_markup: UI.botKeyboard.btnHomePage() });
-            } else {
-                await c.reply("How can I help you next?", { reply_markup: UI.botKeyboard.btnHomePage() });
-            }
-        });
     }
 
     private async contentExecutionHandler() {
@@ -96,5 +70,6 @@ export class ContentExecution {
         await this.manageContext();
         await this.func.star.actionBuyStar();
         await this.func.user.actionHome();
+        await this.func.aiVideo.actionAiVideoSelection()
     }
 }
