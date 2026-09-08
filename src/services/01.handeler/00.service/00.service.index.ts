@@ -6,19 +6,19 @@ import { ServiceUser } from "./03.service.user.js";
 import { ServiceAiVideo } from "./04.service.ai.video.js";
 
 export class ServiceIndex {
-    private bot: Bot<context>;
-    readonly star; 
-    readonly user;
-    readonly aiVideo
-    constructor(bot: Bot<context>) {
-        this.bot = bot
-        this.star = new ServiceStar(this.bot)
-        this.user = new ServiceUser(this.bot)
-        this.aiVideo = new ServiceAiVideo(this.bot)
-    }
-    async serviceAction(){
-        return {
-            video: new ServiceAiVideo(this.bot)
-        }
-    }
+  private bot: Bot<context>;
+  readonly star;
+  readonly user;
+  readonly aiVideo;
+  constructor(bot: Bot<context>) {
+    this.bot = bot;
+    this.star = new ServiceStar(this.bot);
+    this.user = new ServiceUser(this.bot);
+    this.aiVideo = new ServiceAiVideo(this.bot);
+  }
+  async serviceAction() {
+    return {
+      video: new ServiceAiVideo(this.bot),
+    };
+  }
 }

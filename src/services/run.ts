@@ -1,57 +1,57 @@
-import { Bot, Context, SessionFlavor, session} from "grammy";
+import { Bot, Context, SessionFlavor, session } from "grammy";
 import { run } from "@grammyjs/runner";
 import { ContentExecution } from "./01.handeler/00.service/01.service.execution.js";
 import { StarStorage } from "src/utils/storage.star.js";
-import dotenv from 'dotenv'
-dotenv.config()
+import dotenv from "dotenv";
+dotenv.config();
 
 interface sessionData {
-    stars: number,
-    isActive: boolean,
-    isBuying: boolean,
-    isAiContent: boolean,
-    isAiImage: boolean,
-    isAiVideo: boolean,
-    tempStarBuy: number,
-    isCutVideo: boolean,
-    file_id: string,
-    duration: number
-
-} 
-export type context = Context & SessionFlavor<sessionData>
-const token = process.env.TOKEN_BOT as string
+  stars: number;
+  isActive: boolean;
+  isBuying: boolean;
+  isAiContent: boolean;
+  isAiImage: boolean;
+  isAiVideo: boolean;
+  tempStarBuy: number;
+  isCutVideo: boolean;
+  file_id: string;
+  duration: number;
+}
+export type context = Context & SessionFlavor<sessionData>;
+const token = process.env.TOKEN_BOT as string;
 
 export class RunAiBot {
-    private bot
-    private contentExecution
-    private starStorage
-    constructor(){
-        this.bot = new Bot<context>(token)
-        this.setupMiddleWare();
-        this.contentExecution = new ContentExecution(this.bot)
-        this.starStorage = new StarStorage()
-    }
-    private setupMiddleWare (){
-        this.bot.use(session({
-            initial(): sessionData {
-                return {
-                    stars: 0, 
-                    isActive: false,  
-                    isBuying: false,
-                    isAiContent: false,
-                    isAiImage: false,
-                    isAiVideo: false,
-                    tempStarBuy: 0,
-                    isCutVideo: false,
-                    file_id: "",
-                    duration: 0
-                }     
-            }
-        })
-        )
-    }
-    async runBot(){
-        console.log("bot is running...")
-        run(this.bot)
-    }
+  private bot;
+  private contentExecution;
+  private starStorage;
+  constructor() {
+    this.bot = new Bot<context>(token);
+    this.setupMiddleWare();
+    this.contentExecution = new ContentExecution(this.bot);
+    this.starStorage = new StarStorage();
+  }
+  private setupMiddleWare() {
+    this.bot.use(
+      session({
+        initial(): sessionData {
+          return {
+            stars: 0,
+            isActive: false,
+            isBuying: false,
+            isAiContent: false,
+            isAiImage: false,
+            isAiVideo: false,
+            tempStarBuy: 0,
+            isCutVideo: false,
+            file_id: "",
+            duration: 0,
+          };
+        },
+      }),
+    );
+  }
+  async runBot() {
+    console.log("bot is running...");
+    run(this.bot);
+  }
 }
