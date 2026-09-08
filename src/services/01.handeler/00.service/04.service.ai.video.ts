@@ -27,7 +27,7 @@ export class ServiceAiVideo {
     this.bot.callbackQuery("btn_cut_video", async (c) => {
       await c.answerCallbackQuery();
       c.session.isCutVideo = true;
-      c.reply("Please send you video");
+      c.reply("Please send your video!");
     });
     this.bot.on("message:video", async (c, next) => {
       console.log(c.session.isCutVideo);

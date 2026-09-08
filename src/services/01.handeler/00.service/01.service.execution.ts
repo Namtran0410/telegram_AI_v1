@@ -28,7 +28,7 @@ export class ContentExecution {
     this.bot.callbackQuery("btn_star_balance", async (c) => {
       await c.answerCallbackQuery();
       const currentStars = c.session?.stars || 0;
-      await c.reply(`This is your star balance: ${currentStars.toFixed(3)} ⭐`);
+      await c.reply(`This is your star balance: ${currentStars.toFixed(1)} ⭐`);
     });
 
     const aiActions = {
