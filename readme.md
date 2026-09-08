@@ -13,6 +13,7 @@ npm install -D tsx
 npm install -D selfsigned @types/selfsigned
 npm i fluent-ffmpeg @ffmpeg-installer/ffmpeg
 npm i -D @types/fluent-ffmpeg
+npm i @ffprobe-installer/ffprobe
 
 ## ============================================================================================================
 # 📌 Tính năng chính

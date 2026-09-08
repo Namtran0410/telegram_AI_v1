@@ -13,7 +13,10 @@ interface sessionData {
     isAiImage: boolean,
     isAiVideo: boolean,
     tempStarBuy: number,
-    isCutVideo: boolean
+    isCutVideo: boolean,
+    file_id: string,
+    duration: number
+
 } 
 export type context = Context & SessionFlavor<sessionData>
 const token = process.env.TOKEN_BOT as string
@@ -39,7 +42,9 @@ export class RunAiBot {
                     isAiImage: false,
                     isAiVideo: false,
                     tempStarBuy: 0,
-                    isCutVideo: false
+                    isCutVideo: false,
+                    file_id: "",
+                    duration: 0
                 }     
             }
         })

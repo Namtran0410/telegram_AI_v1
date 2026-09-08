@@ -45,8 +45,6 @@ export class ServiceStar {
         this.bot.callbackQuery("btn_confirm_buy", async(c)=> {
             c.session.stars = (c.session.stars || 0) + c.session.tempStarBuy;
             this.storagefunc.storageStarOfUser({"star": c.session.stars, "userId": c.from.id, "username": c.from.username})
-            //Delete 
-            await c.deleteMessage()
             // query
             await c.answerCallbackQuery({
                 text: `🎉 Successfully added ${c.session.tempStarBuy} stars!`,
@@ -55,7 +53,7 @@ export class ServiceStar {
 
             await c.reply(
                 `You have bought ${c.session.tempStarBuy} ⭐, ` +
-                `Your account contain ${c.session.stars.toFixed(3)} ⭐, please continue your conversation!`, 
+                `Your account contain ${c.session.stars.toFixed(1)} ⭐, please continue your conversation!`, 
                 { reply_markup: UI.botKeyboard.btnHomePage() }
             );
         })
