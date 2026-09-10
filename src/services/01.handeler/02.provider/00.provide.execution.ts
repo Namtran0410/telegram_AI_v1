@@ -7,7 +7,7 @@ export class ProvideExecution {
   readonly provideVideoExecution;
   constructor() {
     app.use("*", logger());
-    this.provideVideoExecution = new ProviderVideoExecution().execution();
+    this.provideVideoExecution = new ProviderVideoExecution()
     http
       .createServer(getRequestListener(app.fetch))
       .listen(process.env.port, () => {

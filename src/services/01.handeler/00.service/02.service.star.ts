@@ -36,7 +36,7 @@ export class ServiceStar {
     Object.keys(UI.starKeyboard.starButtonContext).forEach((key: any) => {
       this.bot.callbackQuery(key, async (c) => {
         //Delete
-        await c.deleteMessage();
+        
         const addedStars =
           UI.starKeyboard.starButtonContext[
             key as keyof typeof UI.starKeyboard.starButtonContext

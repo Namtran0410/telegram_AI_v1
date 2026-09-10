@@ -32,6 +32,10 @@ export class ContentExecution {
     });
 
     const aiActions = {
+      btn_star_balance:{
+        text: "This is your star balance",
+        flag: "isCheckStar",
+      },
       btn_ai_content: {
         text: "Tell me what content you are interested in?",
         flag: "isAiContent",
@@ -44,6 +48,18 @@ export class ContentExecution {
         text: "Describe the video concept you want:",
         flag: "isAiVideo",
       },
+      btn_buy_star:{
+        text: "You want to buy some stars? ",
+        flag: "isBuying",
+      },
+      btn_history:{
+        text: "Not updated yet",
+        flag: "isHistory",
+      },
+      btn_document:{
+        text: "This function is only written for admin",
+        flag: "isDocument",
+      }
     };
 
     Object.entries(aiActions).forEach(([key, config]) => {
@@ -56,11 +72,15 @@ export class ContentExecution {
           c.session.isAiContent = false;
           c.session.isAiImage = false;
           c.session.isAiVideo = false;
+          c.session.isDocument = false;
+          c.session.isCheckStar = false;
+          c.session.isBuying = false;
+          c.session.isHistory = false;
 
           (c.session as any)[config.flag] = true;
 
           if (key == "btn_ai_video") {
-            await c.reply("Chosing action with your video", {
+            await c.reply("Choosing action with your video", {
               reply_markup: UI.menuKeyboard.btnAiVideo(),
             });
           } else {
@@ -86,5 +106,7 @@ export class ContentExecution {
     await this.func.star.actionBuyStar();
     await this.func.user.actionHome();
     await this.func.aiVideo.actionAiVideoSelection();
+    await this.func.aiDocument.actionGetFileDocument()
+    await this.func.aiVideoGenerating.actionVideoAiGeneration()
   }
 }

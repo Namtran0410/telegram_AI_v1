@@ -1,6 +1,7 @@
 import { Bot, Context, InlineKeyboard, SessionFlavor, session } from "grammy";
 import { context } from "../../run.js";
 import { UiIndex as UI } from "../../00.ui/00.index.ui.js";
+import { User } from "src/utils/storage.star.js";
 
 export class ServiceUser {
   private bot: Bot<context>;
@@ -19,8 +20,13 @@ export class ServiceUser {
   async actionHome() {
     this.bot.callbackQuery("btn_home", async (c) => {
       //Delete
-      await c.deleteMessage();
-
+      
+      c.session.isAiImage = false
+      c.session.isAiVideo = false
+      c.session.isAiContent = false
+      c.session.isBuying = false
+      c.session.isCutVideoByLength = false
+      c.session.isCutVideoByTime  = false
       // callback query
       await c.answerCallbackQuery();
       await c.reply("Choosing your AI service!", {

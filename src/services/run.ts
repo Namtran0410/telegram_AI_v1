@@ -2,21 +2,11 @@ import { Bot, Context, SessionFlavor, session } from "grammy";
 import { run } from "@grammyjs/runner";
 import { ContentExecution } from "./01.handeler/00.service/01.service.execution.js";
 import { StarStorage } from "src/utils/storage.star.js";
+import { sessionData } from "src/types/session.type.js";
 import dotenv from "dotenv";
 dotenv.config();
 
-interface sessionData {
-  stars: number;
-  isActive: boolean;
-  isBuying: boolean;
-  isAiContent: boolean;
-  isAiImage: boolean;
-  isAiVideo: boolean;
-  tempStarBuy: number;
-  isCutVideo: boolean;
-  file_id: string;
-  duration: number;
-}
+
 export type context = Context & SessionFlavor<sessionData>;
 const token = process.env.TOKEN_BOT as string;
 
@@ -30,22 +20,31 @@ export class RunAiBot {
     this.contentExecution = new ContentExecution(this.bot);
     this.starStorage = new StarStorage();
   }
+  basicStateValue: sessionData = {
+    stars: 0,
+    isActive: false,
+    isBuying: false,
+    isAiContent: false,
+    isAiImage: false,
+    isAiVideo: false,
+    tempStarBuy: 0,
+    isCutVideoByTime: false,
+    isCutVideoByLength:false,
+    file_id: "",
+    duration: 0,
+    isReceiveText: false,
+    isGenerateVideo: false,
+    isReceiveDocument:false,
+    isCheckStar: false,
+    isDocument: false,
+    isHistory: false
+  }
   private setupMiddleWare() {
+    const initialState = this.basicStateValue
     this.bot.use(
       session({
         initial(): sessionData {
-          return {
-            stars: 0,
-            isActive: false,
-            isBuying: false,
-            isAiContent: false,
-            isAiImage: false,
-            isAiVideo: false,
-            tempStarBuy: 0,
-            isCutVideo: false,
-            file_id: "",
-            duration: 0,
-          };
+          return initialState;
         },
       }),
     );
