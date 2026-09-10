@@ -1,58 +1,58 @@
 interface sessionStar {
-    stars: number;
-    isBuying: boolean;
-    tempStarBuy: number;
-    isCheckStar: boolean;
-    isHistory: boolean
+  stars: number;
+  isBuying: boolean;
+  tempStarBuy: number;
+  isCheckStar: boolean;
+  isHistory: boolean;
 }
 
 interface sessionContent {
-    isAiContent: boolean;
+  isAiContent: boolean;
 }
 
 interface sessionUser {
-    file_id: string;
-    isActive: boolean;
+  file_id: string;
+  isActive: boolean;
 }
 
 interface sessionContext {
-    isReceiveText: boolean,
+  isReceiveText: boolean;
 }
 
 interface sessionVideo {
-    isAiVideo: boolean;
-    isCutVideoByTime: boolean;
-    isCutVideoByLength: boolean;
-    duration: number;
-    isGenerateVideo: boolean,
+  isAiVideo: boolean;
+  isCutVideoByTime: boolean;
+  isCutVideoByLength: boolean;
+  duration: number;
+  isGenerateVideo: boolean;
 }
 
 interface sessionImage {
-    isAiImage: boolean;
+  isAiImage: boolean;
 }
 
 interface sessionDocument {
-    isDocument: boolean,
-    isReceiveDocument: boolean
+  isDocument: boolean;
+  isReceiveDocument: boolean;
 }
-export type BotState = 
-  | 'IDLE' 
-  | 'STARS_BALANCE_SELECT'
-  | 'AI_CONTENT_SELECT'     
-  | 'AI_IMAGE_SELECT'              
-  | 'AI_VIDEO_SELECT'       
-  | 'PURCHASE_STAR_SELECT'
-  | 'HISTORY_SELECT'
-  | 'AI_DOCUMENT_SELECT'
-  
+export type BotState =
+  | "IDLE"
+  | "STARS_BALANCE_SELECT"
+  | "AI_CONTENT_SELECT"
+  | "AI_IMAGE_SELECT"
+  | "AI_VIDEO_SELECT"
+  | "PURCHASE_STAR_SELECT"
+  | "HISTORY_SELECT"
+  | "AI_DOCUMENT_SELECT";
 
-export interface sessionData extends 
-    sessionStar, 
-    sessionContent, 
-    sessionUser, 
+export interface sessionData
+  extends
+    sessionStar,
+    sessionContent,
+    sessionUser,
     sessionContext,
     sessionVideo,
     sessionImage,
-    sessionDocument
-    
-{state: BotState}   
+    sessionDocument {
+  state: BotState;
+}

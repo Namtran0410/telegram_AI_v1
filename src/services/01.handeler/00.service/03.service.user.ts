@@ -20,7 +20,7 @@ export class ServiceUser {
   async actionHome() {
     this.bot.callbackQuery("btn_home", async (c) => {
       //Delete
-      c.session.state = 'IDLE'
+      c.session.state = "IDLE";
 
       // callback query
       await c.answerCallbackQuery();

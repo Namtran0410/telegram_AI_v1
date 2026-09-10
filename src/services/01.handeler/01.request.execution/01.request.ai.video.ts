@@ -23,21 +23,21 @@ export class RequestAiVideo {
     const response = await req.json();
     return response;
   }
-  async requestGenVideo(userId: number, seconds: number, message: string){
-    const listOption = ["6", "30", "60", "120"]
-    if(!listOption.some(item =>  item == String(seconds))) {
-      return
+  async requestGenVideo(userId: number, seconds: number, message: string) {
+    const listOption = ["6", "30", "60", "120"];
+    if (!listOption.some((item) => item == String(seconds))) {
+      return;
     }
     let url = `${process.env.base_url}/api/video/gen?seconds=${seconds}`;
-    const res =  await fetch(url, {
+    const res = await fetch(url, {
       method: "POST",
       headers: {
-        "x-internal-secret": process.env.SECRET_KEY  as string,
-        "x-user-id": String(userId)
+        "x-internal-secret": process.env.SECRET_KEY as string,
+        "x-user-id": String(userId),
       },
-      body: JSON.stringify({message})
-    })
-    const response = await res.json()
-    return response
+      body: JSON.stringify({ message }),
+    });
+    const response = await res.json();
+    return response;
   }
 }

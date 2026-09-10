@@ -70,5 +70,4 @@ export class StarStorage {
     }
     return userInfor;
   }
-
 }

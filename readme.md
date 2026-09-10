@@ -145,38 +145,36 @@ user trigger → api server → api provider → api server → user
 - Văn phong hiển thị trên nút và thông báo cần ngắn gọn, thân thiện, nhất quán về tone xuyên suốt toàn bộ bot
 
 ## ============================================================================================================
-Topic                                           Star            Giá model                            Tên model          Lợi nhuận                     
-(Local FFmpeg)                                  1  ⭐           Free                                   Local            +$0.014
+
+Topic Star Giá model Tên model Lợi nhuận  
+(Local FFmpeg) 1 ⭐ Free Local +$0.014
 Gen ảnh AI cơ bản (Flux Schnell)                2  ⭐           $0.002 – $0.004 / ảnh                  Fal.ai           +$0.025
-Gen Video AI ngắn (4-5s)                        15 ⭐           ~$0.1                                 Kling API         +$0.110
+Gen Video AI ngắn (4-5s) 15 ⭐ ~$0.1                                 Kling API         +$0.110
 
-Phase 1    MVP              month 1-3        ~$4.10 / tháng
+Phase 1 MVP month 1-3 ~$4.10 / tháng
 Phase 2    Expand           month 4-6        ~$84.40 / tháng
-Phase 3    Scaleup          month 7          ~$478.00 / tháng
+Phase 3 Scaleup month 7 ~$478.00 / tháng
 
-Giai đoạn & Hạng mục	    Khối lượng GD	        Doanh thu quy đổi ($)	    Tổng doanh thu ($)	    Tổng chi phí API ($)	    Lợi nhuận gộp ($)
+Giai đoạn & Hạng mục Khối lượng GD Doanh thu quy đổi ($)	    Tổng doanh thu ($) Tổng chi phí API ($)	    Lợi nhuận gộp ($)
 
-Phase 1: Khởi động			                                                        $21.25	                    $5.00	                +$16.25 / tháng
-• Cắt video (Local FFmpeg)	    500	                    ~$0.013	                    $6.50	                    $0.00	                $6.50
-• Gen ảnh AI (Flux Schnell)	    300	                    ~$0.026	                    $7.80	                    $0.90	                $6.90
-• Gen Video AI ngắn (4-5s)	    50	                    ~$0.195	                    $9.75	                    $5.00	                $4.75
+Phase 1: Khởi động $21.25	                    $5.00 +$16.25 / tháng
+• Cắt video (Local FFmpeg)	    500	                    ~$0.013 $6.50	                    $0.00 $6.50
+• Gen ảnh AI (Flux Schnell)	    300	                    ~$0.026 $7.80	                    $0.90 $6.90
+• Gen Video AI ngắn (4-5s)	    50	                    ~$0.195 $9.75	                    $5.00 $4.75
 
-Phase 2: Tăng trưởng			                                                    $124.80	                    $31.50	                +$93.30 / tháng
-• Cắt video (Local FFmpeg)	    3,000	                ~$0.013	                    $39.00	                    $0.00	                $39.00
-• Gen ảnh AI (Flux Schnell)	    1,500	                ~$0.026	                    $39.00	                    $4.50	                $34.50
-• Gen Video AI ngắn (4-5s)	    300	                    ~$0.195	                    $58.50	                    $30.00	                $28.50
+Phase 2: Tăng trưởng $124.80	                    $31.50 +$93.30 / tháng
+• Cắt video (Local FFmpeg)	    3,000	                ~$0.013 $39.00	                    $0.00 $39.00
+• Gen ảnh AI (Flux Schnell)	    1,500	                ~$0.026 $39.00	                    $4.50 $34.50
+• Gen Video AI ngắn (4-5s)	    300	                    ~$0.195 $58.50	                    $30.00 $28.50
 
-Phase 3: Scale mạnh			                                                        $643.50	                    $174.00	                +$469.50 / tháng
-• Cắt video (Local FFmpeg)	    15,000	                ~$0.013	                    $195.00	                    $0.00	                $195.00
-• Gen ảnh AI (Flux Schnell)	    8,000	                ~$0.026	                    $208.00	                    $24.00	                $184.00
-• Gen Video AI ngắn (4-5s)	    1,500	                ~$0.195	                    $292.50	                    $150.00	                $142.50`
+Phase 3: Scale mạnh $643.50	                    $174.00 +$469.50 / tháng
+• Cắt video (Local FFmpeg)	    15,000	                ~$0.013 $195.00	                    $0.00 $195.00
+• Gen ảnh AI (Flux Schnell)	    8,000	                ~$0.026 $208.00	                    $24.00 $184.00
+• Gen Video AI ngắn (4-5s)	    1,500	                ~$0.195 $292.50	                    $150.00 $142.50`
 
-
-Giá video: 
-Thời lượng	        Chi phí gốc API	        Giá bán đề xuất (1.5x)	        Số lượng Telegram Stars
-6 giây	                ~$3.00	                $4.50	                        ~350   Stars
-30 giây	                ~$15.00	                $22.50	                        ~1,730 Stars
-60 giây	                ~$30.00	                $45.00	                        ~3,460 Stars
-120 giây	            ~$60.00	                $90.00	                        ~6,920 Stars
-
-
+Giá video:
+Thời lượng Chi phí gốc API Giá bán đề xuất (1.5x) Số lượng Telegram Stars
+6 giây ~$3.00	                $4.50 ~350 Stars
+30 giây ~$15.00	                $22.50 ~1,730 Stars
+60 giây ~$30.00	                $45.00 ~3,460 Stars
+120 giây ~$60.00	                $90.00 ~6,920 Stars

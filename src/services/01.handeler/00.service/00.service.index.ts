@@ -12,15 +12,15 @@ export class ServiceIndex {
   readonly star;
   readonly user;
   readonly aiVideo;
-  readonly aiDocument
-  readonly aiVideoGenerating
+  readonly aiDocument;
+  readonly aiVideoGenerating;
   constructor(bot: Bot<context>) {
     this.bot = bot;
     this.star = new ServiceStar(this.bot);
     this.user = new ServiceUser(this.bot);
     this.aiVideo = new ServiceAiVideoCutting(this.bot);
-    this.aiDocument = new  ServiceAiDocument(this.bot)
-    this.aiVideoGenerating = new ServiceAiVideoGenerating(this.bot)
+    this.aiDocument = new ServiceAiDocument(this.bot);
+    this.aiVideoGenerating = new ServiceAiVideoGenerating(this.bot);
   }
   // async serviceAction() {
   //   return {

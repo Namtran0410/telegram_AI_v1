@@ -14,13 +14,15 @@ export class ContentExecution {
     this.contentExecutionHandler();
     this.storagefunc = new StarStorage();
   }
-  private async handelerIdleState(){
-    this.bot.on("message:text", async(c, next)=> {
-      if(c.session.state == 'IDLE') {
-        await c.reply("Please choose your AI model!", {reply_markup: UI.menuKeyboard.btnMenu()})
+  private async handelerIdleState() {
+    this.bot.on("message:text", async (c, next) => {
+      if (c.session.state == "IDLE") {
+        await c.reply("Please choose your AI model!", {
+          reply_markup: UI.menuKeyboard.btnMenu(),
+        });
       }
-      await next()
-    })
+      await next();
+    });
   }
 
   private async manageContext() {
@@ -41,41 +43,41 @@ export class ContentExecution {
     });
 
     const aiActions = {
-      btn_star_balance:{
+      btn_star_balance: {
         text: "This is your star balance",
         flag: "isCheckStar",
-        state: "STARS_BALANCE_SELECT"
+        state: "STARS_BALANCE_SELECT",
       },
       btn_ai_content: {
         text: "Tell me what content you are interested in?",
         flag: "isAiContent",
-        state: 'AI_CONTENT_SELECT' 
+        state: "AI_CONTENT_SELECT",
       },
       btn_ai_image: {
         text: "Describe the image you want to generate:",
         flag: "isAiImage",
-        state: 'AI_IMAGE_SELECT' 
+        state: "AI_IMAGE_SELECT",
       },
       btn_ai_video: {
         text: "Describe the video concept you want:",
         flag: "isAiVideo",
-        state: 'AI_VIDEO_SELECT' 
+        state: "AI_VIDEO_SELECT",
       },
-      btn_buy_star:{
+      btn_buy_star: {
         text: "You want to buy some stars? ",
         flag: "isBuying",
-        state: 'PURCHASE_STAR_SELECT' 
+        state: "PURCHASE_STAR_SELECT",
       },
-      btn_history:{
+      btn_history: {
         text: "Not updated yet",
         flag: "isHistory",
-        state: 'HISTORY_SELECT' 
+        state: "HISTORY_SELECT",
       },
-      btn_document:{
+      btn_document: {
         text: "This function is only written for admin",
         flag: "isDocument",
-        state: 'AI_DOCUMENT_SELECT' 
-      }
+        state: "AI_DOCUMENT_SELECT",
+      },
     };
 
     Object.entries(aiActions).forEach(([key, config]) => {
@@ -94,17 +96,16 @@ export class ContentExecution {
           c.session.isHistory = false;
 
           (c.session as any)[config.flag] = true;
-          c.session.state = config.state as BotState
+          c.session.state = config.state as BotState;
 
           if (key == "btn_ai_video") {
             await c.reply("Choosing action with your video", {
               reply_markup: UI.menuKeyboard.btnAiVideo(),
             });
-          }else if(key == "btn_ai_content"){
-              c.session.state = "AI_CONTENT_SELECT"
-              c.reply(config.text)
-          } 
-          else {
+          } else if (key == "btn_ai_content") {
+            c.session.state = "AI_CONTENT_SELECT";
+            c.reply(config.text);
+          } else {
             await c.reply(config.text);
           }
         } else {
@@ -127,8 +128,8 @@ export class ContentExecution {
     await this.func.star.actionBuyStar();
     await this.func.user.actionHome();
     await this.func.aiVideo.actionAiVideoSelection();
-    await this.func.aiDocument.actionGetFileDocument()
-    await this.func.aiVideoGenerating.actionVideoAiGeneration()
-    await this.handelerIdleState()
+    await this.func.aiDocument.actionGetFileDocument();
+    await this.func.aiVideoGenerating.actionVideoAiGeneration();
+    await this.handelerIdleState();
   }
 }

@@ -28,7 +28,7 @@ export class MenuKeyboard {
       .text("💳 Top up Stars", "btn_buy_star")
       .text("📜 History", "btn_history")
       .row()
-      .text("📜 AI Document", "btn_document")
+      .text("📜 AI Document", "btn_document");
   }
   btnConfirmBuy(): InlineKeyboard {
     return new InlineKeyboard()
@@ -44,17 +44,17 @@ export class MenuKeyboard {
   }
   btnCuttingVideoType(): InlineKeyboard {
     return new InlineKeyboard()
-    .text("Cut By Second", "btn_cut_by_time")
-    .text("Cut By Length", "btn_cut_by_length")
-    .row()
-    .text("Home Page", "btn_home");
+      .text("Cut By Second", "btn_cut_by_time")
+      .text("Cut By Length", "btn_cut_by_length")
+      .row()
+      .text("Home Page", "btn_home");
   }
   btnGenVideoSelection(): InlineKeyboard {
     return new InlineKeyboard()
-    .text("6 Seconds","btn_gen_video_6s")
-    .text("30 Seconds","btn_gen_video_30s")
-    .row()
-    .text("60 Seconds","btn_gen_video_60s")
-    .text("120 Seconds","btn_gen_video_120s")
+      .text("6 Seconds", "btn_gen_video_6s")
+      .text("30 Seconds", "btn_gen_video_30s")
+      .row()
+      .text("60 Seconds", "btn_gen_video_60s")
+      .text("120 Seconds", "btn_gen_video_120s");
   }
 }

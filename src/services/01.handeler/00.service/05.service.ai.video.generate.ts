@@ -19,41 +19,54 @@ export class ServiceAiVideoGenerating {
     this.strg = new StarStorage();
   }
   /**  */
-  async actionVideoAiGeneration(){
-    this.bot.callbackQuery("btn_generate_video", async(c)=>  {
-      if(c.session.state == 'AI_VIDEO_SELECT') {
-        
-        await c.answerCallbackQuery()
-        await c.reply("Please choose your video length", {reply_markup: UI.menuKeyboard.btnGenVideoSelection()})
-        const listOption = ["6", "30", "60", "120"]
-        for(let i of listOption) {
-          const btn = `btn_gen_video_${i}s`
-          
-          this.bot.callbackQuery(btn, async(c)=> {
-            
-            await c.answerCallbackQuery()
-            await c.reply(`You chosed ${i}s video \nPlease describe your idea and send it to me`, {reply_markup: UI.botKeyboard.btnHomePage()})
-            c.session.isGenerateVideo = true
-            c.session.isReceiveText = true
-            c.session.isCutVideoByTime = false
-            c.session.isCutVideoByLength = false
-            c.session.duration = Number(i)
-          })
-        }
-        this.bot.on("message:text", async(c, next)=> {
-          if(c.session.isGenerateVideo && c.session.isReceiveText && c.session.isAiVideo) {
-            const text = c.msg.text
-            const res = await Request.aiVideo.requestGenVideo(c.from.id, c.session.duration, text)
-            await c.reply(res.message, {reply_markup: UI.menuKeyboard.btnMenu()})
+  async actionVideoAiGeneration() {
+    this.bot.callbackQuery("btn_generate_video", async (c) => {
+      if (c.session.state == "AI_VIDEO_SELECT") {
+        await c.answerCallbackQuery();
+        await c.reply("Please choose your video length", {
+          reply_markup: UI.menuKeyboard.btnGenVideoSelection(),
+        });
+        const listOption = ["6", "30", "60", "120"];
+        for (let i of listOption) {
+          const btn = `btn_gen_video_${i}s`;
 
-            c.session.isGenerateVideo = false
-            c.session.isReceiveText = false
-            c.session.isAiVideo  = false
-          } 
-          await next()
-          c.session.state = 'IDLE'
-        })
+          this.bot.callbackQuery(btn, async (c) => {
+            await c.answerCallbackQuery();
+            await c.reply(
+              `You chosed ${i}s video \nPlease describe your idea and send it to me`,
+              { reply_markup: UI.botKeyboard.btnHomePage() },
+            );
+            c.session.isGenerateVideo = true;
+            c.session.isReceiveText = true;
+            c.session.isCutVideoByTime = false;
+            c.session.isCutVideoByLength = false;
+            c.session.duration = Number(i);
+          });
+        }
+        this.bot.on("message:text", async (c, next) => {
+          if (
+            c.session.isGenerateVideo &&
+            c.session.isReceiveText &&
+            c.session.isAiVideo
+          ) {
+            const text = c.msg.text;
+            const res = await Request.aiVideo.requestGenVideo(
+              c.from.id,
+              c.session.duration,
+              text,
+            );
+            await c.reply(res.message, {
+              reply_markup: UI.menuKeyboard.btnMenu(),
+            });
+
+            c.session.isGenerateVideo = false;
+            c.session.isReceiveText = false;
+            c.session.isAiVideo = false;
+          }
+          await next();
+          c.session.state = "IDLE";
+        });
       }
-    })
+    });
   }
 }

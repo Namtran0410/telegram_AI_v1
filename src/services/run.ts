@@ -6,7 +6,6 @@ import { sessionData } from "src/types/session.type.js";
 import dotenv from "dotenv";
 dotenv.config();
 
-
 export type context = Context & SessionFlavor<sessionData>;
 const token = process.env.TOKEN_BOT as string;
 
@@ -29,19 +28,19 @@ export class RunAiBot {
     isAiVideo: false,
     tempStarBuy: 0,
     isCutVideoByTime: false,
-    isCutVideoByLength:false,
+    isCutVideoByLength: false,
     file_id: "",
     duration: 0,
     isReceiveText: false,
     isGenerateVideo: false,
-    isReceiveDocument:false,
+    isReceiveDocument: false,
     isCheckStar: false,
     isDocument: false,
     isHistory: false,
-    state: "IDLE"
-  }
+    state: "IDLE",
+  };
   private setupMiddleWare() {
-    const initialState = this.basicStateValue
+    const initialState = this.basicStateValue;
     this.bot.use(
       session({
         initial(): sessionData {

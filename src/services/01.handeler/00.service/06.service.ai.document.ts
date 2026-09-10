@@ -16,24 +16,24 @@ ffmpeg.setFfprobePath(ffprobeInstaller.path);
 export class ServiceAiDocument {
   private bot: Bot<context>;
   private strg: StarStorage;
-  private pluggin: PlugginDocument
+  private pluggin: PlugginDocument;
   constructor(bot: Bot<context>) {
     this.bot = bot;
     this.strg = new StarStorage();
-    this.pluggin = new PlugginDocument()
+    this.pluggin = new PlugginDocument();
   }
   /**  */
   async actionGetFileDocument() {
-    this.bot.callbackQuery("btn_document", async(c, next)=> {
-      await c.answerCallbackQuery()
-      await next()
-    })
+    this.bot.callbackQuery("btn_document", async (c, next) => {
+      await c.answerCallbackQuery();
+      await next();
+    });
     this.bot.on("message:document", async (c) => {
       // Kiểm tra xem có phải file PDF không (tùy chọn)
-      console.log("Running")
-      const doc = c.msg.document
-      console.log(c.session.isDocument)
-      if(c.session.isDocument) {
+      console.log("Running");
+      const doc = c.msg.document;
+      console.log(c.session.isDocument);
+      if (c.session.isDocument) {
         if (!doc || !doc.mime_type?.includes("pdf")) {
           return c.reply("File incorrect format");
         }
@@ -41,28 +41,30 @@ export class ServiceAiDocument {
         const filePath = fileInfo.file_path;
         const token = process.env.TOKEN_BOT;
         const downloadUrl = `https://api.telegram.org/file/bot${token}/${filePath}`;
-        
-        await this.pluggin.getDocument(downloadUrl, 'output');
+
+        await this.pluggin.getDocument(downloadUrl, "output");
         await c.reply("File download successful");
-      } 
-      else if (!c.session.isDocument){
-        await c.reply("Seem like you have just select an other AI, please select AI Document again", {reply_markup: UI.menuKeyboard.btnMenu()})
+      } else if (!c.session.isDocument) {
+        await c.reply(
+          "Seem like you have just select an other AI, please select AI Document again",
+          { reply_markup: UI.menuKeyboard.btnMenu() },
+        );
       }
-      c.session.isDocument = false
-    }) ;
+      c.session.isDocument = false;
+    });
   }
 }
 
 export class PlugginDocument {
   async getDocument(downloadUrl: string, folderName: string) {
-    const res = await fetch(downloadUrl)
-    if(!res.ok) throw new Error("Error when get file")
+    const res = await fetch(downloadUrl);
+    if (!res.ok) throw new Error("Error when get file");
 
-    const fileContent = await res.arrayBuffer()
+    const fileContent = await res.arrayBuffer();
     const buffer = Buffer.from(fileContent);
 
-    const outputDir= path.join(process.cwd(), folderName);
-    const fileName = path.join(outputDir, `file_${Date.now()}.pdf`)
-    fs.writeFileSync(fileName, buffer)
+    const outputDir = path.join(process.cwd(), folderName);
+    const fileName = path.join(outputDir, `file_${Date.now()}.pdf`);
+    fs.writeFileSync(fileName, buffer);
   }
-} 
+}
