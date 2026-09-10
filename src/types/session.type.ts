@@ -35,6 +35,16 @@ interface sessionDocument {
     isDocument: boolean,
     isReceiveDocument: boolean
 }
+export type BotState = 
+  | 'IDLE' 
+  | 'STARS_BALANCE_SELECT'
+  | 'AI_CONTENT_SELECT'     
+  | 'AI_IMAGE_SELECT'              
+  | 'AI_VIDEO_SELECT'       
+  | 'PURCHASE_STAR_SELECT'
+  | 'HISTORY_SELECT'
+  | 'AI_DOCUMENT_SELECT'
+  
 
 export interface sessionData extends 
     sessionStar, 
@@ -44,4 +54,5 @@ export interface sessionData extends
     sessionVideo,
     sessionImage,
     sessionDocument
-{}   
+    
+{state: BotState}   

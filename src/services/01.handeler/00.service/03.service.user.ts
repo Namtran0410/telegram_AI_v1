@@ -20,13 +20,8 @@ export class ServiceUser {
   async actionHome() {
     this.bot.callbackQuery("btn_home", async (c) => {
       //Delete
-      
-      c.session.isAiImage = false
-      c.session.isAiVideo = false
-      c.session.isAiContent = false
-      c.session.isBuying = false
-      c.session.isCutVideoByLength = false
-      c.session.isCutVideoByTime  = false
+      c.session.state = 'IDLE'
+
       // callback query
       await c.answerCallbackQuery();
       await c.reply("Choosing your AI service!", {

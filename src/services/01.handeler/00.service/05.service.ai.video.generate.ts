@@ -21,19 +21,22 @@ export class ServiceAiVideoGenerating {
   /**  */
   async actionVideoAiGeneration(){
     this.bot.callbackQuery("btn_generate_video", async(c)=>  {
-      if(c.session.isAiVideo) {
+      if(c.session.state == 'AI_VIDEO_SELECT') {
+        
         await c.answerCallbackQuery()
         await c.reply("Please choose your video length", {reply_markup: UI.menuKeyboard.btnGenVideoSelection()})
-
         const listOption = ["6", "30", "60", "120"]
         for(let i of listOption) {
           const btn = `btn_gen_video_${i}s`
           
           this.bot.callbackQuery(btn, async(c)=> {
+            
             await c.answerCallbackQuery()
             await c.reply(`You chosed ${i}s video \nPlease describe your idea and send it to me`, {reply_markup: UI.botKeyboard.btnHomePage()})
             c.session.isGenerateVideo = true
             c.session.isReceiveText = true
+            c.session.isCutVideoByTime = false
+            c.session.isCutVideoByLength = false
             c.session.duration = Number(i)
           })
         }
@@ -46,13 +49,10 @@ export class ServiceAiVideoGenerating {
             c.session.isGenerateVideo = false
             c.session.isReceiveText = false
             c.session.isAiVideo  = false
-          } else {
-              await c.reply("Seem like you have just select an other AI, please select AI Video again", {reply_markup: UI.menuKeyboard.btnMenu()})
-          }
+          } 
           await next()
+          c.session.state = 'IDLE'
         })
-      } else {
-        await c.reply("Seem like you have just select an other AI, please select AI Video again", {reply_markup: UI.menuKeyboard.btnMenu()})
       }
     })
   }

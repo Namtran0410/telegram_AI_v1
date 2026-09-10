@@ -37,7 +37,8 @@ export class RunAiBot {
     isReceiveDocument:false,
     isCheckStar: false,
     isDocument: false,
-    isHistory: false
+    isHistory: false,
+    state: "IDLE"
   }
   private setupMiddleWare() {
     const initialState = this.basicStateValue
