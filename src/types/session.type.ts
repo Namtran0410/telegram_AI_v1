@@ -15,16 +15,10 @@ interface sessionUser {
   isActive: boolean;
 }
 
-interface sessionContext {
-  isReceiveText: boolean;
-}
 
 interface sessionVideo {
   isAiVideo: boolean;
-  isCutVideoByTime: boolean;
-  isCutVideoByLength: boolean;
   duration: number;
-  isGenerateVideo: boolean;
 }
 
 interface sessionImage {
@@ -43,14 +37,20 @@ export type BotState =
   | "AI_VIDEO_SELECT"
   | "PURCHASE_STAR_SELECT"
   | "HISTORY_SELECT"
-  | "AI_DOCUMENT_SELECT";
+  | "AI_DOCUMENT_SELECT"
+  | "CUT_VIDEO_BY_TIME"
+  | "CUT_VIDEO_BY_LENGTH"
+  | "GENERTATE_VIDEO"
+  | "AI_IMAGE_EDIT"
+  | "AI_IMAGE_GENERATE"
+  | "AI_IMAGE_EDIT_WAIT_FOR_DESC"
+  | "AI_IMAGE_GEN_WAIT_FOR_DESC"
 
 export interface sessionData
   extends
     sessionStar,
     sessionContent,
     sessionUser,
-    sessionContext,
     sessionVideo,
     sessionImage,
     sessionDocument {

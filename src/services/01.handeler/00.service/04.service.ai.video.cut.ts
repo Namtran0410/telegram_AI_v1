@@ -29,15 +29,14 @@ export class ServiceAiVideoCutting {
       await c.reply("How do you envision the video being edited?", {
         reply_markup: UI.menuKeyboard.btnCuttingVideoType(),
       });
+      c.session.state = 'AI_VIDEO_SELECT'
     });
     // Cut by time
     this.bot.callbackQuery("btn_cut_by_time", async (c) => {
       if (c.session.isAiVideo) {
         await c.answerCallbackQuery();
-        await c.reply("Please send me your video");
-        c.session.isCutVideoByTime = true;
-        c.session.isCutVideoByLength = false;
-        c.session.isGenerateVideo = false;
+        await c.reply("You choosed cut video by time. Please send me your video");
+        c.session.state = 'CUT_VIDEO_BY_TIME'
       } else {
         c.reply(
           "Seem like you have just select an other AI, please select AI Video again",
@@ -50,10 +49,8 @@ export class ServiceAiVideoCutting {
     this.bot.callbackQuery("btn_cut_by_length", async (c) => {
       if (c.session.isAiVideo) {
         await c.answerCallbackQuery();
-        await c.reply("Please send me your video");
-        c.session.isCutVideoByLength = true;
-        c.session.isCutVideoByTime = false;
-        c.session.isGenerateVideo = false;
+        await c.reply("You choosed cut video by length. Please send me your video");
+        c.session.state = 'CUT_VIDEO_BY_LENGTH'
       } else {
         c.reply(
           "Seem like you have just select an other AI, please select AI Video again",
@@ -64,34 +61,28 @@ export class ServiceAiVideoCutting {
 
     // message execution
     this.bot.on("message:video", async (c, next) => {
-      if (c.session.state == "AI_VIDEO_SELECT") {
-        if (c.session.isCutVideoByTime) {
+        if (c.session.state == 'CUT_VIDEO_BY_TIME') {
           await c.reply(
-            "How long would you like each clip to be? \n (Just type the number in seconds 👇, for example: `30`)",
+            "How long would you like each clip to be? \n (Just type the number in seconds 👇, for example: 30)",
             { reply_markup: UI.botKeyboard.btnHomePage() },
           );
           c.session.file_id = c.msg.video.file_id;
           c.session.duration = c.msg.video.duration;
-          c.session.isReceiveText = true;
         }
 
-        if (c.session.isCutVideoByLength) {
+        if (c.session.state == 'CUT_VIDEO_BY_LENGTH') {
           await c.reply(
             "What file size would you like each part to be? \n (Just type the size in KB 👇, for example: 1024 for 1MB)",
             { reply_markup: UI.botKeyboard.btnHomePage() },
           );
           c.session.file_id = c.msg.video.file_id;
           c.session.duration = c.msg.video.duration;
-          c.session.isReceiveText = true;
         }
-      }
     });
 
     this.bot.on("message:text", async (c, next) => {
       if (
-        (c.session.isCutVideoByTime || c.session.isCutVideoByLength) &&
-        c.session.isReceiveText &&
-        c.session.state != "IDLE"
+        (c.session.state == 'CUT_VIDEO_BY_LENGTH' || c.session.state == 'CUT_VIDEO_BY_TIME') 
       ) {
         if (!c.session.file_id) {
           return await c.reply(
@@ -135,7 +126,7 @@ export class ServiceAiVideoCutting {
 
           /** Cut video by time */
           let cutFile;
-          if (c.session.isCutVideoByTime) {
+          if (c.session.state == 'CUT_VIDEO_BY_TIME') {
             cutFile = await this.plugginVideo.cutVideoBySecond(
               localFilePath,
               outputDir,
@@ -148,9 +139,6 @@ export class ServiceAiVideoCutting {
               Number(c.msg.text),
             );
           }
-
-          c.session.isCutVideoByTime = false;
-          c.session.isCutVideoByLength = false;
 
           c.session.file_id = "";
           for (let item = 0; item < cutFile.length; item++) {

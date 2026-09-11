@@ -64,10 +64,11 @@ export class ProviderVideoExecution {
           {
             message: "Your Star is not enough",
           },
-          401,
+          404,
         );
       } else {
         const remainStar = userStar.star - Number(param) * 20;
+        /** Call API google gemini in this line and get response for video */ 
         this.starStorage.storageStarOfUser({
           star: remainStar,
           userId: Number(xUserId),

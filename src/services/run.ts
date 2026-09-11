@@ -27,12 +27,8 @@ export class RunAiBot {
     isAiImage: false,
     isAiVideo: false,
     tempStarBuy: 0,
-    isCutVideoByTime: false,
-    isCutVideoByLength: false,
     file_id: "",
     duration: 0,
-    isReceiveText: false,
-    isGenerateVideo: false,
     isReceiveDocument: false,
     isCheckStar: false,
     isDocument: false,
@@ -50,16 +46,17 @@ export class RunAiBot {
     );
   }
   async runBot() {
-    console.log("bot is running...");
     run(this.bot);
   }
   async botStateBehavior(state: 'ACTIVE' | 'MAINTENANCE') {
-    if(state == 'MAINTENANCE') {
+    console.log("BOT STATUS:", state)
+    if(state === 'MAINTENANCE') {
       this.bot.on("message:text", async(c)=> {
-        c.reply("Our AI BOT is under maintenance, sorry for the inconveniance")
+        await c.reply("Our AI BOT is under maintenance, sorry for the inconvenience.")
       })
+      await this.bot.start(); 
     }
-    if(state == 'ACTIVE') {
+    else {
       await this.runBot()
     }
   }

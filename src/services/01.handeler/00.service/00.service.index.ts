@@ -4,8 +4,9 @@ import { UiIndex as UI } from "../../00.ui/00.index.ui.js";
 import { ServiceStar } from "./02.service.star.js";
 import { ServiceUser } from "./03.service.user.js";
 import { ServiceAiVideoCutting } from "./04.service.ai.video.cut.js";
-import { ServiceAiDocument } from "./06.service.ai.document.js";
+import { ServiceAiDocument } from "./08.service.ai.document.js";
 import { ServiceAiVideoGenerating } from "./05.service.ai.video.generate.js";
+import { ServiceAiImageGenerating } from "./06.service.ai.image.generate.js";
 
 export class ServiceIndex {
   private bot: Bot<context>;
@@ -14,6 +15,7 @@ export class ServiceIndex {
   readonly aiVideo;
   readonly aiDocument;
   readonly aiVideoGenerating;
+  readonly aiImageGenerating
   constructor(bot: Bot<context>) {
     this.bot = bot;
     this.star = new ServiceStar(this.bot);
@@ -21,10 +23,6 @@ export class ServiceIndex {
     this.aiVideo = new ServiceAiVideoCutting(this.bot);
     this.aiDocument = new ServiceAiDocument(this.bot);
     this.aiVideoGenerating = new ServiceAiVideoGenerating(this.bot);
+    this.aiImageGenerating = new ServiceAiImageGenerating(this.bot)
   }
-  // async serviceAction() {
-  //   return {
-  //     video: new ServiceAiVideoCutting(this.bot),
-  //   };
-  // }
 }

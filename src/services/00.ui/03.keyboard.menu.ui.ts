@@ -35,6 +35,11 @@ export class MenuKeyboard {
       .text("Confirm", "btn_confirm_buy")
       .text("Cancel", "btn_cancel_buy");
   }
+  btnAiImage(): InlineKeyboard  {
+    return new InlineKeyboard()
+    .text("Edit Picture","btn_edit_image")
+    .text("Generate Image", "btn_generate_image")
+  }
   btnAiVideo(): InlineKeyboard {
     return new InlineKeyboard()
       .text("Cut Video", "btn_cut_video")

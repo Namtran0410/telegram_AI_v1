@@ -102,10 +102,18 @@ export class ContentExecution {
             await c.reply("Choosing action with your video", {
               reply_markup: UI.menuKeyboard.btnAiVideo(),
             });
-          } else if (key == "btn_ai_content") {
+          } 
+          else if (key == "btn_ai_content") {
             c.session.state = "AI_CONTENT_SELECT";
             c.reply(config.text);
-          } else {
+          } 
+          else if(key == "btn_ai_image") {
+            c.session.state =  "AI_IMAGE_SELECT";
+            c.reply("Choosing action with your image", {
+              reply_markup: UI.menuKeyboard.btnAiImage()
+            })
+          }
+          else {
             await c.reply(config.text);
           }
         } else {
@@ -130,6 +138,7 @@ export class ContentExecution {
     await this.func.aiVideo.actionAiVideoSelection();
     await this.func.aiDocument.actionGetFileDocument();
     await this.func.aiVideoGenerating.actionVideoAiGeneration();
+    await this.func.aiImageGenerating.actionImageAiGeneration()
     await this.handelerIdleState();
   }
 }

@@ -21,6 +21,7 @@ export class ServiceAiVideoGenerating {
   /**  */
   async actionVideoAiGeneration() {
     this.bot.callbackQuery("btn_generate_video", async (c) => {
+      c.session.state = 'AI_VIDEO_SELECT'
       if (c.session.state == "AI_VIDEO_SELECT") {
         await c.answerCallbackQuery();
         await c.reply("Please choose your video length", {
@@ -33,21 +34,17 @@ export class ServiceAiVideoGenerating {
           this.bot.callbackQuery(btn, async (c) => {
             await c.answerCallbackQuery();
             await c.reply(
-              `You chosed ${i}s video \nPlease describe your idea and send it to me`,
+              `You choosed AI generate mode for ${i}s video \nPlease describe your idea and send it to me`,
               { reply_markup: UI.botKeyboard.btnHomePage() },
             );
-            c.session.isGenerateVideo = true;
-            c.session.isReceiveText = true;
-            c.session.isCutVideoByTime = false;
-            c.session.isCutVideoByLength = false;
+            c.session.state='GENERTATE_VIDEO'
             c.session.duration = Number(i);
           });
         }
         this.bot.on("message:text", async (c, next) => {
+          console.log("BOT STATE: ", c.session.state)
           if (
-            c.session.isGenerateVideo &&
-            c.session.isReceiveText &&
-            c.session.isAiVideo
+            c.session.state=='GENERTATE_VIDEO'
           ) {
             const text = c.msg.text;
             const res = await Request.aiVideo.requestGenVideo(
@@ -58,13 +55,9 @@ export class ServiceAiVideoGenerating {
             await c.reply(res.message, {
               reply_markup: UI.menuKeyboard.btnMenu(),
             });
-
-            c.session.isGenerateVideo = false;
-            c.session.isReceiveText = false;
-            c.session.isAiVideo = false;
+            c.session.state = "IDLE";
           }
-          await next();
-          c.session.state = "IDLE";
+          await next()
         });
       }
     });
