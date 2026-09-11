@@ -53,4 +53,14 @@ export class RunAiBot {
     console.log("bot is running...");
     run(this.bot);
   }
+  async botStateBehavior(state: 'ACTIVE' | 'MAINTENANCE') {
+    if(state == 'MAINTENANCE') {
+      this.bot.on("message:text", async(c)=> {
+        c.reply("Our AI BOT is under maintenance, sorry for the inconveniance")
+      })
+    }
+    if(state == 'ACTIVE') {
+      await this.runBot()
+    }
+  }
 }

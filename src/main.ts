@@ -12,7 +12,7 @@ class Executed {
     this.run = new RunAiBot();
   }
   async executed() {
-    await this.run.runBot();
+    await this.run.botStateBehavior(process.env.BOT_STATE as any);
   }
 }
 
