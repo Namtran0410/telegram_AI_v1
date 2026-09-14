@@ -39,20 +39,22 @@ export class MenuKeyboard {
     return new InlineKeyboard()
     .text("Edit Picture","btn_edit_image")
     .text("Generate Image", "btn_generate_image")
+    .row()
+    .text("Back", "btn_back")
   }
   btnAiVideo(): InlineKeyboard {
     return new InlineKeyboard()
       .text("Cut Video", "btn_cut_video")
       .text("Generate Video", "btn_generate_video")
       .row()
-      .text("Home Page", "btn_home");
+      .text("Back", "btn_back")
   }
   btnCuttingVideoType(): InlineKeyboard {
     return new InlineKeyboard()
       .text("Cut By Second", "btn_cut_by_time")
       .text("Cut By Length", "btn_cut_by_length")
       .row()
-      .text("Home Page", "btn_home");
+      .text("Back", "btn_back");
   }
   btnGenVideoSelection(): InlineKeyboard {
     return new InlineKeyboard()
@@ -61,5 +63,9 @@ export class MenuKeyboard {
       .row()
       .text("60 Seconds", "btn_gen_video_60s")
       .text("120 Seconds", "btn_gen_video_120s");
+  }
+  btnBack(): InlineKeyboard {
+    return new InlineKeyboard()
+    .text("Back", "btn_back")
   }
 }

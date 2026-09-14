@@ -24,155 +24,96 @@ export class ServiceAiVideoCutting {
     this.plugginVideo = new PlugginVideo();
   }
   async actionAiVideoSelection() {
-    this.bot.callbackQuery("btn_cut_video", async (c) => {
-      await c.answerCallbackQuery();
-      await c.reply("How do you envision the video being edited?", {
-        reply_markup: UI.menuKeyboard.btnCuttingVideoType(),
-      });
-      c.session.state = 'AI_VIDEO_SELECT'
-    });
-    // Cut by time
-    this.bot.callbackQuery("btn_cut_by_time", async (c) => {
-      if (c.session.isAiVideo) {
-        await c.answerCallbackQuery();
-        await c.reply("You choosed cut video by time. Please send me your video");
-        c.session.state = 'CUT_VIDEO_BY_TIME'
-      } else {
-        c.reply(
-          "Seem like you have just select an other AI, please select AI Video again",
-          { reply_markup: UI.menuKeyboard.btnMenu() },
-        );
-      }
-    });
-
-    // Cut by length
-    this.bot.callbackQuery("btn_cut_by_length", async (c) => {
-      if (c.session.isAiVideo) {
-        await c.answerCallbackQuery();
-        await c.reply("You choosed cut video by length. Please send me your video");
-        c.session.state = 'CUT_VIDEO_BY_LENGTH'
-      } else {
-        c.reply(
-          "Seem like you have just select an other AI, please select AI Video again",
-          { reply_markup: UI.menuKeyboard.btnMenu() },
-        );
-      }
-    });
-
-    // message execution
-    this.bot.on("message:video", async (c, next) => {
-        if (c.session.state == 'CUT_VIDEO_BY_TIME') {
-          await c.reply(
-            "How long would you like each clip to be? \n (Just type the number in seconds 👇, for example: 30)",
-            { reply_markup: UI.botKeyboard.btnHomePage() },
-          );
-          c.session.file_id = c.msg.video.file_id;
-          c.session.duration = c.msg.video.duration;
+    this.bot.on("message:video", async(c, next)=> {
+        if(c.session.state == 'CUT_VIDEO_BY_TIME' || c.session.state == 'CUT_VIDEO_BY_LENGTH') {
+            const receiveVideoMsg = await c.reply("Receiving your video")
+            // await c.api.deleteMessage(c.chatId, receiveVideoMsg.message_id);
+            c.session.file_id = c.msg.video.file_id;
+            c.session.duration = c.msg.video.duration;
         }
-
-        if (c.session.state == 'CUT_VIDEO_BY_LENGTH') {
-          await c.reply(
-            "What file size would you like each part to be? \n (Just type the size in KB 👇, for example: 1024 for 1MB)",
-            { reply_markup: UI.botKeyboard.btnHomePage() },
-          );
-          c.session.file_id = c.msg.video.file_id;
-          c.session.duration = c.msg.video.duration;
+        if(c.session.state == 'CUT_VIDEO_BY_TIME') {
+            await c.reply("How long would you like each clip to be? \n (Just type the number in seconds 👇, for example: 30)", {
+                reply_markup: UI.menuKeyboard.btnBack()
+            })
         }
-    });
-
-    this.bot.on("message:text", async (c, next) => {
-      if (
-        (c.session.state == 'CUT_VIDEO_BY_LENGTH' || c.session.state == 'CUT_VIDEO_BY_TIME') 
-      ) {
-        if (!c.session.file_id) {
-          return await c.reply(
-            "Please send me your video before entering the parameters! 👇",
-            {
-              reply_markup: UI.menuKeyboard.btnMenu(),
-            },
-          );
+        if(c.session.state == 'CUT_VIDEO_BY_LENGTH') {
+            await c.reply("What file size would you like each part to be? \n (Just type the size in KB 👇, for example: 1024 for 1MB", {
+                reply_markup: UI.menuKeyboard.btnBack()
+            })
         }
-        const res = await Request.aiVideo.requestCutVideo(
-          c.session.file_id,
-          c.session.duration,
-          +c.msg.text,
-        );
-        await c.reply("Processing your video—this will just take a moment.");
+        await next()
+    })
+    this.bot.on("message:text", async(c, next)=> {
+        const text = Number(c.msg.text)
+        const userInfor = await this.strg.getStorageUserInfor(c.from.id)
 
-        if (res.status == true) {
-          const userInfor = await this.strg.getStorageUserInfor(c.from.id);
-
-          /** Get video from telegram */
-          const fileInfor = await c.api.getFile(c.session.file_id);
-          const filePath = fileInfor.file_path;
-          const token = process.env.TOKEN_BOT;
-          const downloadUrl = `https://api.telegram.org/file/bot${token}/${filePath}`;
-
-          const response = await fetch(downloadUrl);
-          if (!response.ok)
+        /** Get common infor file */
+        const fileInfor = await c.api.getFile(c.session.file_id)
+        const filePath = fileInfor.file_path
+        const token = process.env.TOKEN_BOT
+        const downloadUrl = `https://api.telegram.org/file/bot${token}/${filePath}`;
+        const response = await fetch(downloadUrl)
+        if(!response.ok) {
             throw new Error("Không thể tải file từ server Telegram");
-
-          const arrayBuffer = await response.arrayBuffer();
-          const buffer = Buffer.from(arrayBuffer);
-
-          const uploadDir = path.join(process.cwd(), "uploads");
-          const outputDir = path.join(process.cwd(), `output/${c.from.id}`);
-          if (!fs.existsSync(uploadDir)) {
+        }
+        const arrayBuffer = await response.arrayBuffer()
+        const buffer = Buffer.from(arrayBuffer);
+        const uploadDir = path.join(process.cwd(), "uploads")
+        const outputDir = path.join(process.cwd(), `output/${c.from.id}`)
+        
+        if (!fs.existsSync(uploadDir)) {
             fs.mkdirSync(uploadDir, { recursive: true });
-          }
+        }
+        if (!fs.existsSync(outputDir)) {
+            fs.mkdirSync(outputDir, { recursive: true });
+        }
+        const localFilePath = path.join(uploadDir, `video_${Date.now()}.mp4`)
+        fs.writeFileSync(localFilePath, buffer);
 
-          const localFilePath = path.join(uploadDir, `video_${Date.now()}.mp4`);
-          fs.writeFileSync(localFilePath, buffer);
-
-          /** Cut video by time */
-          let cutFile;
-          if (c.session.state == 'CUT_VIDEO_BY_TIME') {
+        let cutFile;
+        if (c.session.state == 'CUT_VIDEO_BY_TIME') {
+            await c.reply("Wait for processing")
             cutFile = await this.plugginVideo.cutVideoBySecond(
-              localFilePath,
-              outputDir,
-              Number(c.msg.text),
+                localFilePath,
+                outputDir,
+                Number(c.msg.text),
             );
-          } else {
+        } else {
+            await c.reply("Wait for processing")
             cutFile = await this.plugginVideo.cutVideoByLength(
-              localFilePath,
-              outputDir,
-              Number(c.msg.text),
+                localFilePath,
+                outputDir,
+                Number(c.msg.text),
             );
-          }
-
-          c.session.file_id = "";
-          for (let item = 0; item < cutFile.length; item++) {
-            const filePath = cutFile[item];
-            await c.replyWithVideo(new InputFile(filePath), {
-              caption: `Part ${item + 1}`,
-            });
-          }
-          if (fs.existsSync(outputDir)) {
+        }
+        
+        c.session.file_id = "";
+        for (let item = 0; item < cutFile.length; item++) {
+        const filePath = cutFile[item];
+        await c.replyWithVideo(new InputFile(filePath), {
+            caption: `Part ${item + 1}`,
+        });
+        }
+        if (fs.existsSync(outputDir)) {
             fs.rmSync(outputDir, { recursive: true, force: true });
             console.log("Clear data generation success");
-          }
-          if (fs.existsSync(uploadDir)) {
+        }
+        if (fs.existsSync(uploadDir)) {
             fs.rmSync(uploadDir, { recursive: true, force: true });
             console.log("Clear data uploaded success");
-          }
-
-          /** Deal with upload information*/
-          const videoPrice = Number(process.env.videoPrice) || 0;
-          const remainStar = (userInfor.star - videoPrice).toFixed(1);
-          await this.strg.storageStarOfUser({
-            username: c.from.username,
-            userId: c.from.id,
-            star: Number(remainStar),
-          });
-          await c.reply(
-            `${res.message}, your star balance now is: ${remainStar} ⭐`,
-            { reply_markup: UI.menuKeyboard.btnMenu() },
-          );
         }
-        c.session.state = "IDLE";
-      }
-      await next();
-    });
+        const videoPrice = Number(process.env.videoPrice) || 0;
+        const remainStar = (userInfor.star - videoPrice).toFixed(1);
+        await this.strg.storageStarOfUser({
+        username: c.from.username,
+        userId: c.from.id,
+        star: Number(remainStar),
+        });
+        await c.reply(
+        `Your star balance now is: ${remainStar} ⭐`,
+        { reply_markup: UI.menuKeyboard.btnBack() },
+        );
+    })
   }
 }
 

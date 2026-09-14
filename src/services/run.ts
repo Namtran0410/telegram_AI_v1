@@ -34,6 +34,7 @@ export class RunAiBot {
     isDocument: false,
     isHistory: false,
     state: "IDLE",
+    arrayBotState: ["IDLE"]
   };
   private setupMiddleWare() {
     const initialState = this.basicStateValue;

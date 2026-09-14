@@ -21,7 +21,7 @@ export class ServiceAiVideoGenerating {
   /**  */
   async actionVideoAiGeneration() {
     this.bot.callbackQuery("btn_generate_video", async (c) => {
-      c.session.state = 'AI_VIDEO_SELECT'
+      c.session.state = "AI_VIDEO_SELECT"
       if (c.session.state == "AI_VIDEO_SELECT") {
         await c.answerCallbackQuery();
         await c.reply("Please choose your video length", {
