@@ -11,19 +11,10 @@
     "noEmit": true,
 
     "baseUrl": ".",
-    "ignoreDeprecations": "6.0",
-
-    "paths": {
-      "@fixture/*": ["tests/00.fixture/*"],
-      "@business-flow/*": ["bussiness_flow/*"],
-      "@infra/*": ["infra/*"]
-    }
+    "ignoreDeprecations": "6.0"
   },
   "include": [
-    "infra/**/*.ts",
-    "src/**/*.ts",
-    "tests/**/*.ts",
-    "bussiness_flow/**/*.ts"
+    "src/**/*.ts"
   ],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules", "dist", "uploads"]
 }

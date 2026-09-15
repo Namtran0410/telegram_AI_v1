@@ -1,21 +1,12 @@
-import { RunAiBot } from "./services/run.js";
-import { ProvideExecution } from "./services/01.handeler/02.provider/00.provide.execution.js";
+import { BotRunner } from "./run.js";
 
-import dotenv from "dotenv";
-dotenv.config();
-
-class Executed {
-  private run;
-  readonly provideExecution;
-  constructor() {
-    this.provideExecution = new ProvideExecution();
-    this.run = new RunAiBot();
-  }
-  async executed() {
-    await this.run.botStateBehavior(process.env.BOT_STATE as any);
-  }
+export class Main {
+    readonly botRunner: BotRunner
+    constructor(){
+        this.botRunner = new BotRunner()
+        this.assignAction()
+    }
+    async assignAction(){
+        await this.botRunner.run()
+    }
 }
-
-/** Execution */
-const main = new Executed();
-await main.executed();
