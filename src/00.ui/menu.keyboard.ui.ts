@@ -7,7 +7,7 @@ export const MainMenu = {
         .text("💳 Purchase Star", "btn_purchase")
     },
     homeButton:():InlineKeyboard=> {
-        return new InlineKeyboard().text("🔙 Home", "btn_home")
+        return new InlineKeyboard().text("🏠 Home", "btn_home")
     },
     backButton:():InlineKeyboard=> {
         return new InlineKeyboard().text("🔙 Back", "btn_back")

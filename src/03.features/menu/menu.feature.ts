@@ -13,13 +13,14 @@ export class MenuFeature {
     }
 
     // Tách riêng phần "render theo state hiện tại" — dùng lại được cho cả navigate lẫn back
+    // Chuyển state thì sẽ xuất hiện button tiếp theo
     private async render(c: context, arrayState: BotState[]) {
         if (!arrayState || arrayState.length === 0) {
             arrayState = ["MENU"];
         }
         const currentState = arrayState[arrayState.length - 1];
         c.session.botState = currentState;
-
+        console.log({currentState})
         switch (currentState) {
             case "START":
                 await c.reply("Hello!", { reply_markup: MenuIndex.main.welcomeContext() });
@@ -40,15 +41,50 @@ export class MenuFeature {
                 await c.reply("Tell me what you want to create")
                 break;
             case "VIDEO_CUT":
-                await c.reply("Send me your video that you want to cut")
+                await c.reply("Choose tool that you want", {reply_markup:MenuIndex.video.cutVideoOption() })
                 break;
+            // chọn edit video
             case "VIDEO_EDIT":
                 await c.reply("Tell me what type of edit video that you want", {
                     reply_markup: MenuIndex.video.cutVideoOption()
                 })
                 break;
+            // chờ user upload video
+            case "VIDEO_WAIT_FOR_USER_UPLOAD_VIDEO_TIME":
+                await c.reply("You choosed cut video by time, Please send your video for editing", {
+                    reply_markup: MenuIndex.main.backButton()
+                })
+                break;
+            // chờ user gửi duration time
+            case "VIDEO_UPLOADED_AND_WAIT_FOR_TIME_INPUT":
+                await c.reply("tell me the duration that you want",{
+                    reply_markup: MenuIndex.main.backButton()
+                })
+                break;
+            // chờ user upload video
+            case "VIDEO_WAIT_FOR_USER_UPLOAD_VIDEO_SIZE":
+                await c.reply("You choose cut video by size, Please send your video for editing", {
+                    reply_markup: MenuIndex.main.backButton()
+                })
+                break;
+            // chờ user gửi cutting size
+            case "VIDEO_UPLOADED_AND_WAIT_FOR_LENGTH_INPUT":
+                await c.reply("Tell me the size that you want to cut", {
+                    reply_markup: MenuIndex.main.backButton()
+                })
+                break;
+            case "VIDEO_GENERATE_SPECIAL":
+                await c.reply("Please share with us the image that you want to base on it", {
+                    reply_markup: MenuIndex.main.homeButton()
+                })
+                break
+            case "VIDEO_GENERATE":
+                await c.reply("Please tell me your idea", {
+                    reply_markup: MenuIndex.main.homeButton()
+                } )
         }
     }
+    // Bấm nút => Chuyển state
     registerNavigation(bot: Bot<context>){
         const pairButtonState = {
             "btn_home": {
@@ -65,7 +101,23 @@ export class MenuFeature {
             },
             "btn_sub_gen_image": {
                 state: "IMAGE_GENERATE"
+            },
+            "btn_sub_cut_video": {
+                state: "VIDEO_CUT"
+            },
+            "btn_sub_cut_by_time": {
+                state: "VIDEO_WAIT_FOR_USER_UPLOAD_VIDEO_TIME"
+            },
+            "btn_sub_cut_by_length": {
+                state: "VIDEO_WAIT_FOR_USER_UPLOAD_VIDEO_SIZE"
+            },
+            "btn_sub_gen_video":{
+                state: "VIDEO_GENERATE"
+            },
+            "btn_sub_gen_special_video": {
+                state: "VIDEO_GENERATE_SPECIAL"
             }
+
         }
         Object.entries(pairButtonState).forEach(([btn, val])=> {
             bot.callbackQuery(btn, async(c)=> {
@@ -97,4 +149,6 @@ export class MenuFeature {
             await this.goBack(c);          // 1 lệnh
         });
     }
+    // Kết quả sẽ nằm ở đây
+
 }

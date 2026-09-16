@@ -5,11 +5,13 @@ import { BotState } from './types/session.type.js'
 import dotenv from 'dotenv'
 dotenv.config()
 import { MenuFeature } from './03.features/menu/menu.feature.js'
-
+import { VideoFeature } from './03.features/ai-video/video.feature.js'
+import { ImageFeature } from './03.features/ai-image/image.feature.js'
 export interface SessionData {
     botState: BotState
     arrayBotState: BotState[]
     stars: number
+    lastMessageId?: number
 }
 
 export type context = Context & SessionFlavor<SessionData>
@@ -17,14 +19,23 @@ export type context = Context & SessionFlavor<SessionData>
 export class BotRunner {
     private bot: Bot<context>
     private menuFeature: MenuFeature
-
+    private videoFeature: VideoFeature
+    private imageFeature: ImageFeature
     constructor() {
         this.bot = new Bot<context>(process.env.TOKEN_BOT as string)
         this.mySession()
-        this.myErrorHandler()          
+        this.myErrorHandler()   
+        // assign object       
         this.menuFeature = new MenuFeature()
+        this.videoFeature = new VideoFeature()
+        this.imageFeature = new ImageFeature()
+
+        // assign action
         this.menuFeature.registerNavigation(this.bot)
+        this.videoFeature.registerBehavior(this.bot)
         this.menuFeature.registerRoutes(this.bot)
+        this.imageFeature.registerBehavior(this.bot)
+        
     }
 
     private mySession() {
