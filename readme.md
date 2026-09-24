@@ -17,7 +17,7 @@ npm i fluent-ffmpeg @ffmpeg-installer/ffmpeg
 npm i -D @types/fluent-ffmpeg
 npm i @ffprobe-installer/ffprobe
 npm install @fal-ai/serverless-client
-
+npm install async-mutex
 ## ==================================================================================telegram/
 ├── src/
 │   ├── run.ts                          # Composition Root — entry point, wiring toàn bộ bot
@@ -75,7 +75,7 @@ npm install @fal-ai/serverless-client
 │   │   ├── ffmpeg/
 │   │   │   └── ffmpeg.client.ts        # setFfmpegPath, setFfprobePath, các hàm cắt video
 │   │   ├── storage/
-│   │   │   └── star.storage.ts         # StarStorage (đổi từ src/utils)
+│   │   │   └── star.storage.ts         # coinstorage (đổi từ src/utils)
 │   │   └── telegram-file/
 │   │       └── file.downloader.ts      # tải file từ Telegram API (getFile, fetch buffer)
 │   │

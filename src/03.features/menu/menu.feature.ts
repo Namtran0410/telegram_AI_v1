@@ -21,9 +21,10 @@ export class MenuFeature {
         const currentState = arrayState[arrayState.length - 1];
         c.session.botState = currentState;
         console.log({currentState})
+        let botMessage
         switch (currentState) {
             case "START":
-                await c.reply("Hello!", { reply_markup: MenuIndex.main.welcomeContext() });
+                await c.reply("Hello!", { reply_markup: MenuIndex.main.welcomeContext()});
                 break;
             case "MENU":
                 await c.reply("Please choose your AI model below", { reply_markup: MenuIndex.main.mainScreen() });
@@ -35,7 +36,8 @@ export class MenuFeature {
                 await c.reply("Please choose your video edit tool", { reply_markup: MenuIndex.video.subMenu() });
                 break;
             case "IMAGE_EDIT":
-                await c.reply("You choose edit image, send us your image")
+                botMessage= await c.reply("You choose edit image, send us your image")
+                c.session.botLastMessageId = botMessage.message_id
                 break;
             case "IMAGE_GENERATE":
                 await c.reply("Tell me what you want to create")
@@ -51,15 +53,17 @@ export class MenuFeature {
                 break;
             // chờ user upload video
             case "VIDEO_WAIT_FOR_USER_UPLOAD_VIDEO_TIME":
-                await c.reply("You choosed cut video by time, Please send your video for editing", {
+                botMessage = await c.reply("You choosed cut video by time, Please send your video for editing", {
                     reply_markup: MenuIndex.main.backButton()
                 })
+                c.session.botLastMessageId = botMessage.message_id
                 break;
             // chờ user gửi duration time
             case "VIDEO_UPLOADED_AND_WAIT_FOR_TIME_INPUT":
-                await c.reply("tell me the duration that you want",{
+                botMessage = await c.reply("Tell me the duration that you want",{
                     reply_markup: MenuIndex.main.backButton()
                 })
+                c.session.botLastMessageId = botMessage.message_id
                 break;
             // chờ user upload video
             case "VIDEO_WAIT_FOR_USER_UPLOAD_VIDEO_SIZE":
@@ -81,7 +85,11 @@ export class MenuFeature {
             case "VIDEO_GENERATE":
                 await c.reply("Please tell me your idea", {
                     reply_markup: MenuIndex.main.homeButton()
-                } )
+                })
+            case "MENU_COINS":
+                await c.reply("Please select coins number that you want to purchase", {
+                    reply_markup: MenuIndex.coins.subMenu()
+                })
         }
     }
     // Bấm nút => Chuyển state
@@ -116,6 +124,9 @@ export class MenuFeature {
             },
             "btn_sub_gen_special_video": {
                 state: "VIDEO_GENERATE_SPECIAL"
+            },
+            "btn_menu_star_purchase": {
+                state: "MENU_COINS"
             }
 
         }
@@ -138,7 +149,7 @@ export class MenuFeature {
 
     registerRoutes(bot: Bot<context>) {
         bot.command("start", async (c) => {
-            if (!c.session.stars) c.session.stars = 0;
+            if (!c.session.coins) c.session.coins = 0;
             c.session.arrayBotState = ["START"];
             await this.goTo(c, "START");   // 1 lệnh — không cần nhớ 2 bước
         });
@@ -149,6 +160,4 @@ export class MenuFeature {
             await this.goBack(c);          // 1 lệnh
         });
     }
-    // Kết quả sẽ nằm ở đây
-
 }

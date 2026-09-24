@@ -7,11 +7,13 @@ dotenv.config()
 import { MenuFeature } from './03.features/menu/menu.feature.js'
 import { VideoFeature } from './03.features/ai-video/video.feature.js'
 import { ImageFeature } from './03.features/ai-image/image.feature.js'
+import { CoinFeature } from './03.features/coin/coin.feature.js'
 export interface SessionData {
     botState: BotState
     arrayBotState: BotState[]
-    stars: number
-    lastMessageId?: number
+    coins: number
+    botLastMessageId: number
+    requestPurchaseCoin: number
 }
 
 export type context = Context & SessionFlavor<SessionData>
@@ -21,6 +23,7 @@ export class BotRunner {
     private menuFeature: MenuFeature
     private videoFeature: VideoFeature
     private imageFeature: ImageFeature
+    private coinFeature: CoinFeature
     constructor() {
         this.bot = new Bot<context>(process.env.TOKEN_BOT as string)
         this.mySession()
@@ -29,12 +32,15 @@ export class BotRunner {
         this.menuFeature = new MenuFeature()
         this.videoFeature = new VideoFeature()
         this.imageFeature = new ImageFeature()
+        this.coinFeature = new CoinFeature()
 
         // assign action
         this.menuFeature.registerNavigation(this.bot)
         this.videoFeature.registerBehavior(this.bot)
         this.menuFeature.registerRoutes(this.bot)
         this.imageFeature.registerBehavior(this.bot)
+        this.coinFeature.registerBehavior(this.bot)
+        this.coinFeature.registerGetUserBalance(this.bot)
         
     }
 
@@ -43,7 +49,9 @@ export class BotRunner {
             initial: (): SessionData => ({
                 botState: "MENU",
                 arrayBotState: ["MENU"],
-                stars: 0,
+                coins: 0,
+                botLastMessageId:0,
+                requestPurchaseCoin:0
             })
         }))
     }

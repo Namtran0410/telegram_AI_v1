@@ -22,3 +22,17 @@ export type BotState =
 | 'VIDEO_UPLOADED_AND_WAIT_FOR_LENGTH_INPUT'
 | 'VIDEO_SPECIAL_WAIT_FOR_TEXT_GENERATE'
 | 'VIDEO_SPECIAL_WAIT_FOR_TEXT_DESCRIPTION'
+//coins
+| 'MENU_COINS'
+
+export const CoinNumber = [
+    "100",
+    "250",
+    "500", 
+    "1000"
+]
+
+export type UserInfor = {
+    userId: string | number,
+    coins: number
+} 
