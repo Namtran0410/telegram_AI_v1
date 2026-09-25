@@ -18,6 +18,11 @@ npm i -D @types/fluent-ffmpeg
 npm i @ffprobe-installer/ffprobe
 npm install @fal-ai/serverless-client
 npm install async-mutex
+npm install better-sqlite3
+npm install better-sqlite3
+npm install --save-dev @types/better-sqlite3
+
+extension: SQLite Viewer
 ## ==================================================================================telegram/
 ├── src/
 │   ├── run.ts                          # Composition Root — entry point, wiring toàn bộ bot

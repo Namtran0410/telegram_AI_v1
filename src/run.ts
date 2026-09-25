@@ -41,7 +41,6 @@ export class BotRunner {
         this.imageFeature.registerBehavior(this.bot)
         this.coinFeature.registerBehavior(this.bot)
         this.coinFeature.registerGetUserBalance(this.bot)
-        
     }
 
     private mySession() {
