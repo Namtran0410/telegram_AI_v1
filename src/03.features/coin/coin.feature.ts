@@ -27,10 +27,12 @@ export class CoinFeature {
             await c.answerCallbackQuery()
             /** Read coin cũ của user */
             const userId = c.from.id
+            const username = c.from.username
             /** Đọc coin cũ */
             /** ghi đè vào file */
             await this.registerWriteCoin({
                 userId, 
+                username,
                 coins: Number(c.session.requestPurchaseCoin), 
                 })
             await c.deleteMessage()
@@ -46,7 +48,7 @@ export class CoinFeature {
     }
     
     async registerWriteCoin(data: UserInfor){
-        dataFeature.registerAddUserToTable(String(data.userId))
+        dataFeature.registerAddUserToTable(String(data.userId), data.username)
         dataFeature.registerAddCoinToUser(String(data.userId), data.coins)
     }
 

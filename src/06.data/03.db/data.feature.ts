@@ -1,11 +1,15 @@
 import db from "./create.db.js";
 
 export class DataFeature {
-    registerAddUserToTable(user_id: string){
+    registerAddUserToTable(user_id: string, username: string | undefined){
+        /** Thêm mới user */
         db.prepare(`
-        INSERT OR IGNORE INTO TB_USER(user_id, coin)
-        VALUES(?, ?)
-        `).run(user_id, 0)
+        INSERT OR IGNORE INTO TB_USER(user_id, username, coin)
+        VALUES(?, ?, ?)
+        `).run(user_id, username, 0)
+        /** add username nếu có thay đổi */
+        db.prepare(`UPDATE TB_USER SET username = ?`).run(username)
+
     }
     registerAddCoinToUser(user_id: string, addedCoin: number){
         const readOldData = db.prepare(`

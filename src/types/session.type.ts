@@ -34,5 +34,6 @@ export const CoinNumber = [
 
 export type UserInfor = {
     userId: string | number,
+    username: string | undefined
     coins: number
 } 
