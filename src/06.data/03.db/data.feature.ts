@@ -8,7 +8,7 @@ export class DataFeature {
         VALUES(?, ?, ?)
         `).run(user_id, username, 0)
         /** add username nếu có thay đổi */
-        db.prepare(`UPDATE TB_USER SET username = ?`).run(username)
+        db.prepare(`UPDATE TB_USER SET username = ? WHERE user_id = ?`).run(username, user_id)
 
     }
     registerAddCoinToUser(user_id: string, addedCoin: number){
