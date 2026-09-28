@@ -2,6 +2,7 @@ import { Bot, Context, CommandContext } from "grammy";
 import { context } from "src/run.js";
 import { MenuFeature } from "../menu/menu.feature.js";
 import { MenuIndex } from "src/00.ui/00.index.ui.js";
+import dataFeature from "src/06.data/03.db/data.feature.js";
 export class ImageFeature {
     readonly menuFeature = new MenuFeature()
     registerBehavior(bot: Bot<context>){
@@ -10,11 +11,24 @@ export class ImageFeature {
             switch(c.session.botState){
                 case "IMAGE_WAIT_FOR_TEXT":
                     /**Delete message image_wait_for_text */
-                    await c.api.deleteMessage(c.chatId, c.session.botLastMessageId)
+                    try {
+                        await c.api.deleteMessage(c.chatId, c.session.botLastMessageId)
+                    } catch {
+                        console.log("User delete message before")
+                    }
 
                     /** Dealing with response data */
                     botMessage = await c.reply("Receive your request, please wait for a momment 🔄") 
-                    await c.reply("✅ Your Image are ready now", {reply_markup: MenuIndex.main.homeButton()})
+                    await c.reply("✅ Your Image are ready now", {reply_markup: MenuIndex.main.imageAndHome()})
+                    await c.api.deleteMessage(c.chatId, botMessage.message_id)
+
+                    await dataFeature.registerAddMediaInformation({
+                        "generation_id": `${String(Date.now())}_${c.from.id}`,
+                        "request_received_time": String(Date.now()),
+                        "status": "SUCCESS",
+                        "type": "image",
+                        "user_id": String(c.from.id)
+                    })
 
                     /** Back to idle */
                     await this.menuFeature.goTo(c, 'IDLE')
@@ -22,8 +36,16 @@ export class ImageFeature {
                 case "IMAGE_GENERATE":
                     /** Dealing with response data */
                     botMessage= await c.reply("Receive your request, please wait for a momment 🔄") 
-                    await c.reply("✅ Your Image are ready now", {reply_markup: MenuIndex.main.homeButton()})
+                    await c.reply("✅ Your Image are ready now", {reply_markup: MenuIndex.main.imageAndHome()})
+                    await c.api.deleteMessage(c.chatId, botMessage.message_id)
 
+                    await dataFeature.registerAddMediaInformation({
+                        "generation_id": `${String(Date.now())}_${c.from.id}`,
+                        "request_received_time": String(Date.now()),
+                        "status": "SUCCESS",
+                        "type": "image",
+                        "user_id": String(c.from.id)
+                    })
                     /** Back to idle */
                     await this.menuFeature.goTo(c, 'IDLE')
                     break;
@@ -34,7 +56,11 @@ export class ImageFeature {
             switch(c.session.botState){
                 case "IMAGE_EDIT":
                     /** Delete message that bot ask user to send picture */
-                    await c.api.deleteMessage(c.chatId, c.session.botLastMessageId)
+                    try {
+                        await c.api.deleteMessage(c.chatId, c.session.botLastMessageId)
+                    } catch {
+                        console.log("User delete message before")
+                    }
                     
                     /** user wait for text description*/
                     botMessage = await c.reply("Receive your picture, what do you want to do with this picture?")

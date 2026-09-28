@@ -8,12 +8,16 @@ import { MenuFeature } from './03.features/menu/menu.feature.js'
 import { VideoFeature } from './03.features/ai-video/video.feature.js'
 import { ImageFeature } from './03.features/ai-image/image.feature.js'
 import { CoinFeature } from './03.features/coin/coin.feature.js'
+import { GenerateVideoFeature } from './03.features/ai-video/video.generate.service.js'
 export interface SessionData {
     botState: BotState
     arrayBotState: BotState[]
     coins: number
     botLastMessageId: number
     requestPurchaseCoin: number
+    photoId: string,
+    videoId: string,
+    mediaType: string
 }
 
 export type context = Context & SessionFlavor<SessionData>
@@ -24,6 +28,7 @@ export class BotRunner {
     private videoFeature: VideoFeature
     private imageFeature: ImageFeature
     private coinFeature: CoinFeature
+    private generateVideoFeature : GenerateVideoFeature
     constructor() {
         this.bot = new Bot<context>(process.env.TOKEN_BOT as string)
         this.mySession()
@@ -33,6 +38,7 @@ export class BotRunner {
         this.videoFeature = new VideoFeature()
         this.imageFeature = new ImageFeature()
         this.coinFeature = new CoinFeature()
+        this.generateVideoFeature = new GenerateVideoFeature()
 
         // assign action
         this.menuFeature.registerNavigation(this.bot)
@@ -41,6 +47,7 @@ export class BotRunner {
         this.imageFeature.registerBehavior(this.bot)
         this.coinFeature.registerBehavior(this.bot)
         this.coinFeature.registerGetUserBalance(this.bot)
+        this.generateVideoFeature.registerBehavior(this.bot)
     }
 
     private mySession() {
@@ -50,7 +57,10 @@ export class BotRunner {
                 arrayBotState: ["MENU"],
                 coins: 0,
                 botLastMessageId:0,
-                requestPurchaseCoin:0
+                requestPurchaseCoin:0,
+                photoId: "",
+                videoId: "",
+                mediaType: ""
             })
         }))
     }

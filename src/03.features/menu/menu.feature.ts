@@ -2,6 +2,7 @@ import { Bot, Context, CommandContext } from "grammy";
 import { context } from "src/run.js";
 import { BotState } from "src/types/session.type.js";
 import { MenuIndex } from "src/00.ui/00.index.ui.js";
+import dataFeature from "src/06.data/03.db/data.feature.js";
 export class MenuFeature {
     // Gộp "push state" + "render" thành 1 hàm duy nhất — điểm vào DUY NHẤT để chuyển màn
     async goTo(c: context, newState: BotState) {
@@ -25,6 +26,7 @@ export class MenuFeature {
         switch (currentState) {
             case "START":
                 await c.reply("Hello!", { reply_markup: MenuIndex.main.welcomeContext()});
+                dataFeature.registerAddUserToTable(String(c.from?.id), c.from?.username)
                 break;
             case "MENU":
                 await c.reply("Please choose your AI model below", { reply_markup: MenuIndex.main.mainScreen() });
@@ -83,13 +85,16 @@ export class MenuFeature {
                 })
                 break
             case "VIDEO_GENERATE":
-                await c.reply("Please tell me your idea", {
-                    reply_markup: MenuIndex.main.homeButton()
+                botMessage = await c.reply("Select the video length that you want to generate", {
+                    reply_markup: MenuIndex.video.generate()
                 })
+                c.session.botLastMessageId = botMessage.message_id
+                break;
             case "MENU_COINS":
                 await c.reply("Please select coins number that you want to purchase", {
                     reply_markup: MenuIndex.coins.subMenu()
                 })
+                break
         }
     }
     // Bấm nút => Chuyển state

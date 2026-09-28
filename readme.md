@@ -21,6 +21,7 @@ npm install async-mutex
 npm install better-sqlite3
 npm install better-sqlite3
 npm install --save-dev @types/better-sqlite3
+npm install --save-dev @faker-js/faker
 
 extension: SQLite Viewer
 ## ==================================================================================telegram/

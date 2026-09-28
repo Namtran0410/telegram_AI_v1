@@ -14,9 +14,10 @@ export const VideoMenu = {
     },
     generate: (): InlineKeyboard=>{
         return new InlineKeyboard()
-        .text("6s Video").text("30s Video")
+        .text("🔮 6s Video", "btn_generate_video_6")
+        .text("🔮 15s Video", "btn_generate_video_15")
         .row()
-        .text("60s Video").text("90s Video")
+        .text("🔮 30s Video", "btn_generate_video_30")
         .text("🔙 Back", "btn_back")
     },
     cutVideoOption:(): InlineKeyboard => {

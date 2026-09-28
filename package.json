@@ -9,6 +9,7 @@
   "keywords": [],
   "type": "module",
   "devDependencies": {
+    "@faker-js/faker": "^10.6.0",
     "@types/better-sqlite3": "^9.6.0",
     "@types/fluent-ffmpeg": "^2.1.28",
     "@types/node": "^26.4.0",

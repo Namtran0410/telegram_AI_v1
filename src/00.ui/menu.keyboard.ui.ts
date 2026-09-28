@@ -27,5 +27,18 @@ export const MainMenu = {
     waitForResource: (): InlineKeyboard => {
         return new InlineKeyboard()
         .text("Wait when resource is syncing 🔄")
+    },
+    imageAndHome:(): InlineKeyboard => {
+        return new InlineKeyboard()
+        .text("🖼️ Image Editing", "btn_image_main_editing")
+        .row()
+        .text("🏠 Home", "btn_home")
+    },
+    videoAndHome:(): InlineKeyboard => {
+        return new InlineKeyboard()
+        .text("🎬 Video Editing", "btn_video_main_editing")
+        .row()
+        .text("🏠 Home", "btn_home")
     }
+
 }

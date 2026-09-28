@@ -22,6 +22,9 @@ export type BotState =
 | 'VIDEO_UPLOADED_AND_WAIT_FOR_LENGTH_INPUT'
 | 'VIDEO_SPECIAL_WAIT_FOR_TEXT_GENERATE'
 | 'VIDEO_SPECIAL_WAIT_FOR_TEXT_DESCRIPTION'
+| 'VIDEO_GENERATE_FOR_6_SECONDS'
+| 'VIDEO_GENERATE_FOR_15_SECONDS'
+| 'VIDEO_GENERATE_FOR_30_SECONDS'
 //coins
 | 'MENU_COINS'
 
@@ -37,3 +40,13 @@ export type UserInfor = {
     username: string | undefined
     coins: number
 } 
+
+export const generateVideoLength = ["6", "15", "30"]
+export type dataGenerationType = 'string' | 'uuid' | 'number' | 'strAndNum' 
+export type generationInformation = {
+    generation_id: string,
+    user_id: string, 
+    type: string,
+    request_received_time: string,
+    status: "PROCESSING" | "SUCCESS" | "FAIL"
+}
