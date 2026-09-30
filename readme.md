@@ -95,3 +95,34 @@ extension: SQLite Viewer
 ├── .gitignore
 ├── package.json
 └── tsconfig.json
+
+## =================================PHASE 1================================================= 
+
+# 1. RELEASE:
+    - Release Image Editing : Edit ảnh - Generate ảnh
+    - Release User Balance
+    - Purchase Coin
+
+## ** Image Editing **
+## Pricing — Phase 1 (Image)
+
+Model: FLUX.2 [pro] via fal.ai — output capped at 1MP, 1 input image per edit.
+Price: 10 coin/image (generate or edit). Payout rate ≈ $0.013/Star (verify on Fragment).
+
+### Per image (base rate 1 Star = 1 coin)
+
+| Type     | Cost (USD) | Price (coin) | Revenue (USD) | Profit/image (USD) | Margin |
+|----------|-----------:|-------------:|--------------:|-------------------:|-------:|
+| Generate | 0.030      | 10           | 0.130         | 0.100              | 77%    |
+| Edit     | 0.045      | 10           | 0.130         | 0.085              | 65%    |
+
+### Coin packs
+
+| Coins | Stars | Discount | Images | Revenue (USD) | Profit — all Generate (USD) | Profit — all Edit (USD) |
+|------:|------:|---------:|-------:|--------------:|----------------------------:|------------------------:|
+| 100   | 100   | —        | 10     | 1.30          | 1.00 (77%)                  | 0.85 (65%)              |
+| 250   | 240   | -4%      | 25     | 3.12          | 2.37 (76%)                  | 2.00 (64%)              |
+| 500   | 450   | -10%     | 50     | 5.85          | 4.35 (74%)                  | 3.60 (62%)              |
+| 1000  | 850   | -15%     | 100    | 11.05         | 8.05 (73%)                  | 6.55 (59%)              |
+
+> Excludes: free trial images, refunds on failed generations, server costs.

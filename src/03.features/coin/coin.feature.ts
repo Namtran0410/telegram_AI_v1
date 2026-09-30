@@ -28,7 +28,7 @@ export class CoinFeature {
             /** Read coin cũ của user */
             const userId = c.from.id
             const username = c.from.username
-            /** Đọc coin cũ */
+
             /** ghi đè vào file */
             await this.registerWriteCoin({
                 userId, 
@@ -66,6 +66,36 @@ export class CoinFeature {
             })
             await c.deleteMessage()
             
+        })
+    }
+    async registerUserGetDailyReward(bot:Bot<context>) {
+        bot.callbackQuery("btn_daily_claim", async(c, next)=>{
+            try {
+                await c.api.deleteMessage(c.chatId ?? "", c.session.botLastMessageId)
+            } catch {
+                console.log("No message to delete")
+            }
+            const userId = c.from.id
+            const username = c.from.username
+            await c.answerCallbackQuery()
+            const addCoinDaily = await dataFeature.registerAddDailyReward(String(c.from.id))
+            if(addCoinDaily) {
+                await this.registerWriteCoin({
+                    userId, 
+                    username,
+                    coins: 1, 
+                })
+                const newCoins = await this.registerReadUserCoin(userId)
+                const botMsg = await c.reply(
+                    `🎉 Congratulation!\nYou have got 1 🪙\nYour coins now: ${newCoins} 🪙`
+                , {reply_markup: MenuIndex.main.homeButton()})
+                c.session.botLastMessageId = botMsg.message_id
+            } else {
+                const botMsg = await c.reply(
+                    `You have received daily reward, please comeback tomorrow to gain more`
+                , {reply_markup: MenuIndex.main.homeButton()})
+                c.session.botLastMessageId = botMsg.message_id
+            }
         })
     }
 }

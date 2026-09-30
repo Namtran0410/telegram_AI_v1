@@ -29,13 +29,14 @@ export class MenuFeature {
                 dataFeature.registerAddUserToTable(String(c.from?.id), c.from?.username)
                 break;
             case "MENU":
-                await c.reply("Please choose your AI model below", { reply_markup: MenuIndex.main.mainScreen() });
+                botMessage=await c.reply("Please choose your AI model below", { reply_markup: MenuIndex.main.mainScreen() });
+                c.session.botLastMessageId = botMessage.message_id
                 break;
             case "MENU_IMAGE":
                 await c.reply("Please choose your image edit tool", { reply_markup: MenuIndex.image.subMenu() });
                 break;
             case "MENU_VIDEO":
-                await c.reply("Please choose your video edit tool", { reply_markup: MenuIndex.video.subMenu() });
+                // await c.reply("Please choose your video edit tool", { reply_markup: MenuIndex.video.subMenu() });
                 break;
             case "IMAGE_EDIT":
                 botMessage= await c.reply("You choose edit image, send us your image")
@@ -130,7 +131,7 @@ export class MenuFeature {
             "btn_sub_gen_special_video": {
                 state: "VIDEO_GENERATE_SPECIAL"
             },
-            "btn_menu_star_purchase": {
+            "btn_menu_coin_purchase": {
                 state: "MENU_COINS"
             }
 

@@ -4,7 +4,7 @@ export const MainMenu = {
     welcomeContext: ():InlineKeyboard=> {
         return new InlineKeyboard()
         .text("🏠 Home", "btn_home")
-        .text("💳 Purchase Star", "btn_menu_star_purchase")
+        .text("💳 Purchase Coin", "btn_menu_coin_purchase")
     },
     homeButton:():InlineKeyboard=> {
         return new InlineKeyboard().text("🏠 Home", "btn_home")
@@ -15,14 +15,17 @@ export const MainMenu = {
     mainScreen: (): InlineKeyboard => {
         return new InlineKeyboard()
         .text("🖼️ Image Editing", "btn_image_main_editing")
-        .text("🎬 Video Editing", "btn_video_main_editing")
+        // .text("🎬 Video Editing", "btn_video_main_editing")
         .row()
-        .text("🎵 TikTok Generating", "btn_tiktok_main_generating")
+        .text("🎁 Claim Reward", "btn_daily_claim")
+        .row()
+        // .text("🎵 TikTok Generating", "btn_tiktok_main_generating")
         .text("💰 User Balance", "btn_user_balance_main_information")
-        .row()
-        .text("💳 Purchase Star", "btn_menu_star_purchase")
+        // .row()
+        .text("💳 Purchase Coin", "btn_menu_coin_purchase")
         .row()
         .text("🚀 Contact me!", "btn_contact_main")
+        .text("About Us", "btn_about_us")
     },
     waitForResource: (): InlineKeyboard => {
         return new InlineKeyboard()

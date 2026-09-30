@@ -48,6 +48,8 @@ export class BotRunner {
         this.coinFeature.registerBehavior(this.bot)
         this.coinFeature.registerGetUserBalance(this.bot)
         this.generateVideoFeature.registerBehavior(this.bot)
+        /**Daily reward */
+        this.coinFeature.registerUserGetDailyReward(this.bot)
     }
 
     private mySession() {

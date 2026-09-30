@@ -9,7 +9,7 @@ export class DataFeature {
         `).run(user_id, username, 0)
         /** add username nếu có thay đổi */
         db.prepare(`UPDATE TB_USERS SET username = ? WHERE user_id = ?`).run(username, user_id)
-
+        
     }
     registerAddCoinToUser(user_id: string, addedCoin: number){
         const readOldData = db.prepare(`
@@ -34,6 +34,18 @@ export class DataFeature {
             VALUES(?,?,?,?,?)    
         `).run(param.generation_id, param.user_id, param.type, param.request_received_time, param.status)
     }
+    async registerAddDailyReward(user_id: string) {
+        const today = new Date().toLocaleDateString("sv-SE");
+        const daily_received= "yes"
+        const result = db.prepare(`
+            INSERT OR IGNORE INTO TB_DAILY_REWARD(
+                date, user_id, daily_received, coin_received
+            )
+            VALUES(?,?,?,?)       
+        `).run(today, user_id, daily_received, 1)
+        return result.changes === 1 
+    } 
+
 }
 
 export default new DataFeature()

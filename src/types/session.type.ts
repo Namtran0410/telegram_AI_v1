@@ -34,6 +34,12 @@ export const CoinNumber = [
     "500", 
     "1000"
 ]
+export const CoinPackages = [
+    { coins: 100,  stars: 100 },
+    { coins: 250,  stars: 240 },
+    { coins: 500,  stars: 450 },
+    { coins: 1000, stars: 850 },
+] as const;
 
 export type UserInfor = {
     userId: string | number,

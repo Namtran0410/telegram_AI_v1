@@ -22,6 +22,14 @@ db.exec(`
         request_received_time TEXT,
         status TEXT NOT NULL DEFAULT 'PROCESSING' CHECK (status IN ('PROCESSING', 'SUCCESS', 'FAIL')),
         FOREIGN KEY (user_id) REFERENCES TB_USERS(user_id) ON DELETE CASCADE
+    );
+    CREATE TABLE IF NOT EXISTS TB_DAILY_REWARD(
+        date TEXT,
+        user_id TEXT,
+        daily_received TEXT DEFAULT 'no' CHECK (daily_received IN ('yes')),
+        coin_received INTEGER,
+        UNIQUE(user_id, date)
+        FOREIGN KEY (user_id) REFERENCES TB_USERS(user_id) ON DELETE CASCADE
     )
 `)
 export default db
