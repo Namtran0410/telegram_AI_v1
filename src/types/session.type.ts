@@ -27,6 +27,8 @@ export type BotState =
 | 'VIDEO_GENERATE_FOR_30_SECONDS'
 //coins
 | 'MENU_COINS'
+//about us
+|'ABOUT_US'
 
 export const CoinNumber = [
     "100",
@@ -56,3 +58,34 @@ export type generationInformation = {
     request_received_time: string,
     status: "PROCESSING" | "SUCCESS" | "FAIL"
 }
+
+export const WELCOME_MESSAGE = `👋 Welcome to Nexus Bridge! ✨
+
+Your AI studio right inside Telegram 🚀
+
+🎨 Generate images from your ideas
+🖼️ Edit photos with a simple text prompt
+🎁 Claim free coins every day
+
+🎬 Coming soon: AI video &amp; TikTok tools!
+
+Tap a button below to get started 
+👇`;
+
+
+export const ABOUT_MESSAGE = `🌉 About Nexus Bridge
+
+Nexus Bridge connects you to powerful AI creative tools, right here in Telegram, with no apps to install and no complicated setup 🚀
+
+🎨 What we do now
+- AI image generation
+- AI photo editing
+
+🔮 What's next
+- AI video creation 🎬
+- TikTok content tools 📱
+
+💡 Our mission
+Make AI creativity simple, fast, and fun for everyone ✨
+
+📩 Questions or feedback? Contact us: namqt.hust@gmail.com`;

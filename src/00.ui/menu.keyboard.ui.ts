@@ -25,7 +25,7 @@ export const MainMenu = {
         .text("💳 Purchase Coin", "btn_menu_coin_purchase")
         .row()
         .text("🚀 Contact me!", "btn_contact_main")
-        .text("About Us", "btn_about_us")
+        .text("ℹ️ About Us", "btn_about_us")
     },
     waitForResource: (): InlineKeyboard => {
         return new InlineKeyboard()

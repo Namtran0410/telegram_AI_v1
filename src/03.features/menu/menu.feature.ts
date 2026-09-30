@@ -1,6 +1,6 @@
 import { Bot, Context, CommandContext } from "grammy";
 import { context } from "src/run.js";
-import { BotState } from "src/types/session.type.js";
+import { BotState, WELCOME_MESSAGE, ABOUT_MESSAGE } from "src/types/session.type.js";
 import { MenuIndex } from "src/00.ui/00.index.ui.js";
 import dataFeature from "src/06.data/03.db/data.feature.js";
 export class MenuFeature {
@@ -25,7 +25,7 @@ export class MenuFeature {
         let botMessage
         switch (currentState) {
             case "START":
-                await c.reply("Hello!", { reply_markup: MenuIndex.main.welcomeContext()});
+                await c.reply(WELCOME_MESSAGE, { reply_markup: MenuIndex.main.welcomeContext()});
                 dataFeature.registerAddUserToTable(String(c.from?.id), c.from?.username)
                 break;
             case "MENU":
@@ -95,7 +95,12 @@ export class MenuFeature {
                 await c.reply("Please select coins number that you want to purchase", {
                     reply_markup: MenuIndex.coins.subMenu()
                 })
-                break
+                break;
+            case "ABOUT_US":
+                botMessage= await c.reply(ABOUT_MESSAGE, {
+                    reply_markup: MenuIndex.main.backButton()
+                })
+                c.session.botLastMessageId = botMessage.message_id
         }
     }
     // Bấm nút => Chuyển state
@@ -133,6 +138,9 @@ export class MenuFeature {
             },
             "btn_menu_coin_purchase": {
                 state: "MENU_COINS"
+            },
+            "btn_about_us": {
+                state: "ABOUT_US"
             }
 
         }
