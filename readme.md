@@ -24,6 +24,11 @@ npm install --save-dev @types/better-sqlite3
 npm install --save-dev @faker-js/faker
 
 extension: SQLite Viewer
+
+docker
+docker run -d --name redis -p 6379:6379 redis:7-alpine
+npm i bullmq
+npm i ioredis
 ## ==================================================================================telegram/
 ├── src/
 │   ├── run.ts                          # Composition Root — entry point, wiring toàn bộ bot
