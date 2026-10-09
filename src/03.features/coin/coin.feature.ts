@@ -6,6 +6,7 @@ import fsPromise from "fs/promises";
 import { MenuIndex } from "src/00.ui/00.index.ui.js";
 import { Mutex } from "async-mutex";
 import dataFeature from "src/06.data/03.db/data.feature.js";
+import MessageQueueCoin from "src/07.bullMQ/01.bullMQ.stars.js";
 
 export class CoinFeature {
     readonly coinPath = "src/06.data/00.coins.json"
@@ -49,7 +50,7 @@ export class CoinFeature {
     
     async registerWriteCoin(data: UserInfor){
         dataFeature.registerAddUserToTable(String(data.userId), data.username)
-        dataFeature.registerAddCoinToUser(String(data.userId), data.coins)
+        await MessageQueueCoin.registerQueueAddCoin({userId: String(data.userId), coin: data.coins})
     }
 
     async registerReadUserCoin(userId: string | number) {

@@ -22,13 +22,16 @@ npm install better-sqlite3
 npm install better-sqlite3
 npm install --save-dev @types/better-sqlite3
 npm install --save-dev @faker-js/faker
+npm i bullmq
+npm i ioredis
 
 extension: SQLite Viewer
 
 docker
-docker run -d --name redis -p 6379:6379 redis:7-alpine
-npm i bullmq
-npm i ioredis
+docker run -d --name redis-bullmq -p 6379:6379 redis:7-alpine
+sudo apt update
+sudo apt install redis-server -y
+sudo systemctl enable --now redis-server
 ## ==================================================================================telegram/
 ├── src/
 │   ├── run.ts                          # Composition Root — entry point, wiring toàn bộ bot
