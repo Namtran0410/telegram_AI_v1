@@ -1,4 +1,4 @@
-import { Queue, Worker, QueueEvents } from "bullmq";
+import { Queue, Worker, QueueEvents, Job } from "bullmq";
 import {Redis} from "ioredis";
 
 const connection = new Redis({
@@ -11,10 +11,28 @@ const connection = new Redis({
 
 class ExerciseOne {
     /**Tạo queue */
-       
+    private registerQueue(message: string){
+        return new Queue(message, {
+            connection, 
+            defaultJobOptions: {
+                attempts: 3,
+                backoff: {
+                    type: "exponential",
+                    delay: 1000
+                }
+            }
+        })
+    }
+    /** Tạo message push */
+    async registerPushMessage<h>(message: string, job: string, handler:h ) {
+        const queue = this.registerQueue(message)
+        queue.add(job, handler)
+    }
     /** send email in time */
-
+    async sendEmail(email: string){
+        console.log("Send email to: ", email)
+    }
     /** Worker */
-
+    
     /** Listener */
 }
